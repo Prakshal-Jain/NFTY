@@ -4,7 +4,7 @@ eCommerce (auction house)
 <hr/>
 
 ## Web Frameworks
-- Frontend: web3 (https://www.npmjs.com/package/web3)
+- Frontend: web3 (https://www.npmjs.com/package/web3) and ReactJS
 - Backend: ExpressJS (https://expressjs.com/)
 
 ## Open-Source Reports
