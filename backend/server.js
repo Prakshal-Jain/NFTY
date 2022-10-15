@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 
 var products = require('./routes/products'); 
 var users = require('./routes/users'); 
@@ -6,10 +7,13 @@ var auction = require('./routes/auction');
 var purchase = require('./routes/purchase'); 
 var selling = require('./routes/selling'); 
 
+
 const app = express();
 const PORT = 8000;
 
-
+// trying to set up database 
+mongoose.connect('mongodb://localhost:27017/myapp');
+// setting up route 
 app.use('/products', products); 
 app.use('/users', users); 
 app.use('/auction', auction); 
