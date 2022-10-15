@@ -1,7 +1,20 @@
 const express = require('express');
 
+var products = require('./routes/products'); 
+var users = require('./routes/users'); 
+var auction = require('./routes/auction'); 
+var purchase = require('./routes/purchase'); 
+var selling = require('./routes/selling'); 
+
 const app = express();
 const PORT = 8000;
+
+
+app.use('/products', products); 
+app.use('/users', users); 
+app.use('/auction', auction); 
+app.use('/purchase', purchase); 
+app.use('/selling', selling)
 
 // route for homepage 
 app.get('/', (req, res) => {
@@ -17,5 +30,6 @@ app.listen(PORT, (error) => {
 });
 
 
+// kill server -> sudo lsof -i :8000 // kill -9 ID 
 
 
