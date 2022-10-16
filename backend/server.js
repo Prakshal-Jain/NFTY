@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
     res.send("Welcome to root URL of Server");
 });
 
-app.listen(PORT, (error) => {
+app.listen(PORT, "0.0.0.0", (error) => {
     if (!error)
         console.log("Server is Successfully Running,and App is listening on port " + PORT)
     else

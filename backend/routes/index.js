@@ -4,9 +4,9 @@ var express = require('express');
 var app = express(); 
 
 
-var products = require('./routes/products'); 
-var users = require('./routes/users'); 
-var auction = require('./routes/auction'); 
+var products = require('./products'); 
+var users = require('./users'); 
+var auction = require('./auction'); 
 
 app.use('/products', products); 
 app.use('/users', users); 

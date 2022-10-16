@@ -1,9 +1,9 @@
 FROM node:13
-ENV HOME /root
-WORKDIR /root
+ENV HOME /backend
+WORKDIR /backend
 COPY . .
+
 # Download dependancies
-WORKDIR "/backend"
 RUN npm install
 EXPOSE 8000
 
