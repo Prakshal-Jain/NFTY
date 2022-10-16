@@ -1,5 +1,5 @@
 const express = require('express');
-// const mongoose = require('mongoose');s
+// const mongoose = require('mongoose');
 
 var products = require('./routes/products'); 
 var users = require('./routes/users'); 
@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
     res.send("Welcome to root URL of Server");
 });
 
-app.listen(PORT, "0.0.0.0", (error) => {
+app.listen(PORT, (error) => {
     if (!error)
         console.log("Server is Successfully Running,and App is listening on port " + PORT)
     else
