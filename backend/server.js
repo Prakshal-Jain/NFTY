@@ -1,5 +1,5 @@
 const express = require('express');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');s
 
 var products = require('./routes/products'); 
 var users = require('./routes/users'); 
@@ -12,7 +12,8 @@ const app = express();
 const PORT = 8000;
 
 // trying to set up database 
-mongoose.connect('mongodb://localhost:27017/myapp');
+// mongoose.connect('mongodb://localhost:27017/myapp');
+
 // setting up route 
 app.use('/products', products); 
 app.use('/users', users); 
