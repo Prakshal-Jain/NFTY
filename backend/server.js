@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path')
 // const mongoose = require('mongoose');
 
 var products = require('./routes/products'); 
@@ -22,9 +23,11 @@ app.use('/purchase', purchase);
 app.use('/selling', selling)
 
 // route for homepage 
-app.get('/', (req, res) => {
-    res.status(200);
-    res.send("Welcome to root URL of Server");
+app.use(express.static(path.join(__dirname, "..", "frontend", "build")))
+
+app.get('/', async (req, res) => {
+    res.status(200)
+    res.sendFile(path.join(__dirname, "frontend", "..", "build", "index.html"))
 });
 
 app.listen(PORT, (error) => {
