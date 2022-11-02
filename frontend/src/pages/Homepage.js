@@ -1,7 +1,7 @@
 import './homepage.css';
-import NavigationBar from './components/NavigationBar';
+import NavigationBar from '../components/NavigationBar';
 import { useEffect, useState } from 'react';
-import FlexLayout from './components/FlexLayout';
+import FlexLayout from '../components/FlexLayout';
 import img_1 from "./assets/1.png";
 import img_2 from "./assets/2.png";
 import img_3 from "./assets/3.png";
