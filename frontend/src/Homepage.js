@@ -2,25 +2,23 @@ import './homepage.css';
 import NavigationBar from './components/NavigationBar';
 import { useEffect, useState } from 'react';
 import FlexLayout from './components/FlexLayout';
+import img_1 from "./assets/1.png";
+import img_2 from "./assets/2.png";
+import img_3 from "./assets/3.png";
+import img_4 from "./assets/4.png";
+import img_5 from "./assets/5.png";
+import img_6 from "./assets/6.png";
+import img_7 from "./assets/7.png";
+import img_8 from "./assets/8.png";
 
-function imageLooper(idx) {
-  const path = `./assets/${idx}.png`
-  console.log(path)
-  const image = require(`./assets/${idx}.png`)
-  return image;
-}
+const imgList = [img_1, img_2, img_3, img_4, img_5, img_6, img_7, img_8];
 
 function Homepage() {
-  const [currImg, setCurrImg] = useState(1);
+  const [currImg, setCurrImg] = useState(0);
 
   useEffect(() => {
     setTimeout(() => {
-      if (currImg >= 8) {
-        setCurrImg(1);
-      }
-      else {
-        setCurrImg(currImg + 1);
-      }
+      setCurrImg(currImg + 1);
     }, 500)
   }, [currImg])
 
@@ -30,7 +28,7 @@ function Homepage() {
       <div className="full-page-bg">
         <FlexLayout direction="horizontal" align="center" style={{ height: '100%' }}>
           <FlexLayout direction="vertical" align="center">
-            <img src={imageLooper(currImg)} className="nft-img" alt="changing nft images" />
+            <img src={imgList[currImg % 8]} className="nft-img" alt="changing nft images" />
             <h3 className="subtitle">Buy &amp; Sell or Auction your NFTs</h3>
           </FlexLayout>
         </FlexLayout>
