@@ -1,6 +1,23 @@
-.full-page-bg{
+.full-page-bg {
   width: 100vw;
   height: 100vh;
-  background-color: black;
-  color: white;
+  background: radial-gradient(#5b4170 0, #28223b 15%, #000000 30%, #000000 100%);
+  color: #fff;
+}
+
+.nft-img {
+  width: 15em;
+  height: 15em;
+  border-radius: 20em;
+}
+
+.subtitle {
+  margin: 2em;
+}
+
+.auction-homepage-container {
+  background: black;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 5em;
 }
