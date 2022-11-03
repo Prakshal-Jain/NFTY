@@ -1,5 +1,5 @@
 const express = require('express');
-const path = require('path')
+const path = require('path');
 
 var products = require('./routes/products'); 
 var users = require('./routes/users'); 
@@ -12,7 +12,7 @@ const app = express();
 const PORT = 8000;
 
 // setting up database
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/database');
 
 // adding user object to database 
@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
 // compile model 
 const User = mongoose.model('User', userSchema);
 
-// create document 
+// create document + testing 
 const testing = new User({
     name: {first: "An", last: "Nguyen"}
 }); 
