@@ -12,8 +12,28 @@ var selling = require('./routes/selling');
 const app = express();
 const PORT = 8000;
 
-// trying to set up database 
-// mongoose.connect('mongodb://localhost:27017/myapp');
+// setting up database
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/database');
+
+// adding user object to database 
+const userSchema = new mongoose.Schema({
+    name: {
+        first: String,
+        last: String
+    }
+}); 
+// compile model 
+const User = mongoose.model('User', userSchema);
+
+// create document + testing 
+const testing = new User({
+    name: {first: "An", last: "Nguyen"}
+}); 
+
+testing_save = testing.save();
+
+
 
 // setting up route 
 app.use('/products', products); 
