@@ -2,7 +2,7 @@
   width: 100vw;
   height: 100vh;
   background: radial-gradient(#5b4170 0, #28223b 15%, #000000 30%, #000000 100%);
-  color: #fff;
+  padding: 2em;
 }
 
 .nft-img {
@@ -16,8 +16,7 @@
 }
 
 .auction-homepage-container {
-  background: black;
-  width: 100vw;
   height: 100vh;
   padding-top: 5em;
+  text-align: center;
 }
