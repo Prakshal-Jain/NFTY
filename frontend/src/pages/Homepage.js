@@ -1,4 +1,4 @@
-import '../homepage.css';
+import './css/homepage.css';
 import NavigationBar from '../components/NavigationBar';
 import { useEffect, useState } from 'react';
 import FlexLayout from '../components/FlexLayout';
