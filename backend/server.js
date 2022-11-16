@@ -1,5 +1,9 @@
+require('dotenv').config() 
+
 const express = require('express');
-const path = require('path');
+const app = express();
+const PORT = 8000;
+const mongoose = require('mongoose');
 
 var products = require('./routes/products'); 
 var users = require('./routes/users'); 
@@ -8,37 +12,39 @@ var purchase = require('./routes/purchase');
 var selling = require('./routes/selling'); 
 
 
-const app = express();
-const PORT = 8000;
 
-// setting up database
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/database');
+// setting up database -> remember to start mongodb on machine!
+mongoose.connect(process.env.DATABASE, { useNewURLParser: true}) 
 
-// adding user object to database 
-const userSchema = new mongoose.Schema({
-    name: {
-        first: String,
-        last: String
-    }
-}); 
-// compile model 
-const User = mongoose.model('User', userSchema);
-
-// create document + testing 
-const testing = new User({
-    name: {first: "An", last: "Nguyen"}
-}); 
-
-console.log(testing.name); 
+// check status with connections
+const database = mongoose.connection
+database.on('error', (error) => console.error(error))
+database.once('open', () => console.log("---Database Connected---"))
 
 
-// setting up route 
-app.use('/products', products); 
-app.use('/users', users); 
-app.use('/auction', auction); 
-app.use('/purchase', purchase); 
-app.use('/selling', selling)
+// // adding user object to database 
+// const userSchema = new mongoose.Schema({
+//     name: {
+//         first: String,
+//         last: String
+//     }
+// }); 
+// // compile model 
+// const user = mongoose.model('User', userSchema);
+
+// // create document + testing 
+// const testing = new user({
+//     name: {first: "An"}
+// }); 
+
+
+
+// // setting up route 
+// app.use('/products', products); 
+// app.use('/users', users); 
+// app.use('/auction', auction); 
+// app.use('/purchase', purchase); 
+// app.use('/selling', selling)
 
 // route for homepage 
 app.get('/', (req, res) => {
@@ -48,14 +54,21 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, (error) => {
     if (!error)
-        console.log("Server is Successfully Running,and App is listening on port " + PORT)
+        console.log("Server is Successfully Running,and App is listening on port " + PORT + "\r\n")
     else
         console.log("Error occurred, server can't start", error);
 });
 
 
+
+
+
+
 // kill server -> sudo lsof -i :8000 // kill -9 ID 
 // git branch stuff: git add -A, git commit -m "", git push -u origin [branchname] 
+// run with nodemon --> nodemon server.js
+// need to start mongodb on terminal before using mongoose 
+// -> mongosh -> mongoose -> mongodb 
 
 
 
