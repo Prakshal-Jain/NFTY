@@ -1,18 +1,36 @@
-var express = require("express");
-var router = express.Router(); 
+const express = require("express");
+const router = express.Router(); 
 
-// "/users"
+// "/users" ->> implementing CRUD  
 router.get('/', (req, res) => {
     res.status(200); 
     res.send("GET request for users");
 }); 
 
-// "/users/user-details"
-router.get('/user-details', (req, res) => {
-    res.status(200); 
-    res.send("GET request for user detail"); 
-}); 
+// handle get 
+router.get('/:username', (req, res) => {
+    
+    // save username for database 
+    var username = req.params.username
+    // send response
+    res.status(200);
+    res.send("Current ID: " + username)
+})
 
-// implement CRUD 4 user 
+// handle post
+router.post('/', (req,res) => {
+    res.status(200);
+})
+
+//handle update 
+router.patch('/', (req,res) => {
+    res.status(200);
+})
+
+// handle delete 
+router.delete('/:id', (req,res) => {
+    res.status(200)
+})
+
 
 module.exports = router; 
