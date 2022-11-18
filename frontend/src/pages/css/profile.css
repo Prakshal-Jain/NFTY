@@ -1,0 +1,24 @@
+.about-container {
+    color: #fff;
+    margin: 2em;
+    background-color: #151516;
+    border-radius: 0.6em;
+    padding: 1em;
+    border: 0.1em solid #28282b;
+    text-align: center;
+    padding: 2em;
+}
+
+.profile-rows {
+    margin-bottom: 2em;
+}
+
+.seperator {
+    width: 100%;
+    background-image: linear-gradient(to left, #c500ff, #a532ff, #8244ff, #584fff, #0057ff);
+    height: 0.1em;
+}
+
+.divider-section-container{
+    margin-bottom: 4em;
+}
