@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path')
-// const mongoose = require('mongoose');
+
 
 var products = require('./routes/products'); 
 var users = require('./routes/users'); 
@@ -27,7 +27,8 @@ app.use(express.static(path.join(__dirname, "..", "frontend", "build")))
 
 app.get('/', async (req, res) => {
     res.status(200)
-    res.sendFile(path.join(__dirname, "frontend", "..", "build", "index.html"))
+    res.send("under construction fr")
+    // res.sendFile(path.join(__dirname, "frontend", "..", "build", "index.html"))
 });
 
 app.listen(PORT, (error) => {
