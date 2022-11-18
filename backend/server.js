@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express');
 const app = express();
 const PORT = 8000;
+const path = require('path');
 const mongoose = require('mongoose');
 
 
@@ -31,8 +32,8 @@ database.once('open', () => console.log("<---Database Connected--->"))
 
 // route for homepage 
 app.get('/', (req, res) => {
-    res.status(200);
-    res.send("Welcome to root URL of Server");
+    res.status(200)
+    res.sendFile(path.join(__dirname+'/testing.html'));
 });
 
 
