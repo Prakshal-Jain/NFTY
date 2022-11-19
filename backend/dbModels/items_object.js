@@ -1,11 +1,14 @@
-// schema for item infos
+const mongoose = require('mongoose'); 
+
+// schema for item infos, each item saved on our website will go onto this schema 
 const objectSchema = new mongoose.Schema({
     item_name: String,
-        item_image: mongoose.SchemaTypes.Url, 
-        description: String, 
-        auction_detail: String, 
-        marketplace_detail: String
-})
+    item_image: String,
+    description: String, 
+    // if auction detail len != 0 -> item being bid?, or we can set a flag here 
+    auction_detail: [], 
+    price: String 
+});
 
-// sidenote: creating objects: https://stackoverflow.com/questions/20606456/whats-the-recommended-way-of-creating-objects-in-nodejs
-
+const objectModel = mongoose.model("Object", objectSchema); 
+module.exports = objectModel

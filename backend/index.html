@@ -1,15 +1,24 @@
 
 <html>
-  <form action="/users/add-user" id="login-form" method="post" enctype="form-data">
-
-
-    <label for="username">username((ʕ•㉨•ʔ)): </label>
-    <textarea id="username" name="username" cols="20" rows="1"></textarea>
-    <br/>
-    <label for="password">password: </label>
-    <textarea id="password" name="password" cols="20" rows="1"></textarea>
-    <br/>
   
-    <input type="submit" value="LET ME IN">
-  </form>
+  <h1> This Is A Simple Sign Up Page</h1>
+
+  <h2> ◑____________◑ </h2>
+  <h3> 
+    <form action="/users/create-user" id="login-form" method="post" enctype="form-data">
+
+      <label for="username">username: </label>
+      <textarea id="username" name="username" cols="20" rows="1"></textarea>
+      <br/>
+      <label for="password">password: </label>
+      <textarea id="password" name="password" cols="20" rows="1"></textarea>
+      <br/>
+      <label for="confirm">confirm password: </label>
+      <textarea id="confirm" name="confirm" cols="20" rows="1"></textarea>
+      <br/>
+    
+      <input type="submit" value="Enter">
+    </form>
+  </h3>
+  
 </html>

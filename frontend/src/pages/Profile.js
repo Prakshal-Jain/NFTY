@@ -1,5 +1,5 @@
 import "./css/profile.css";
-import AuthNavBar from "../components/AuthNavBar";
+//import AuthNavBar from "../components/AuthNavBar";
 import { Row, Col } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image'
 import ItemCard from "../components/ItemCard";
