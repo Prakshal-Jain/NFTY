@@ -4,9 +4,9 @@ const app = express();
 const PORT = 8000;
 const path = require('path');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
-// this is for parsing incoming JSON requests 
-app.use(express.json())
+
 
 // setting up routes 
 const productsRouter  = require('./routes/products'); 
@@ -33,7 +33,7 @@ database.once('open', () => console.log("<---Database Connected--->"))
 app.get('/', (req, res) => {
     res.status(200)
     // testing login? idk man 
-    res.sendFile(path.join(__dirname+'/login_test.html'));
+    res.sendFile(path.join(__dirname+'/index.html'));
 });
 
 app.listen(PORT, (error) => {
