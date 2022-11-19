@@ -10,23 +10,22 @@ router.get('/', (req, res) => {
     res.send("GET request for users");
 }); 
 
-router.get('/add-user', (req, res) => {
+// add register new user details -- POST Request
+router.post('/add-user', (req, res) => {
     // need to parse req -> get username, password and everything -> create new user -> save to database
+    console.log(req.body);
     let newUser = new userModel({
-        username: "stirfrysushi", 
-        password: "123456789", 
-        balance: "50000", 
+        username: req.body.username,
+        password: req.body.password,
+        balance: req.body.balance
     })
     newUser.save(function(err,newUser){
-        if(err) {
-            res.send(err)
-        } else {
-            res.send({status: 200, message: "User Created, Welcome to NFTY :D", new_user_details: newUser}); 
-        }
+        if(err) 
+        res.send(err)
+        else 
+        res.send({status: 200, message: "User Created, Welcome to NFTY :D", new_user_details: newUser}); 
     });
 }); 
-
-
 
 
 module.exports = router; 
