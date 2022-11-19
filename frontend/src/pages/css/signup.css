@@ -1,0 +1,21 @@
+.form-container {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    padding: 5em;
+}
+
+.form-container > h3{
+    color: white;
+    font-weight: bold;
+}
+
+.login-card{
+    width: 70%;
+    padding: 2em;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}

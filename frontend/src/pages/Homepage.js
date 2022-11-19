@@ -1,5 +1,4 @@
 import './css/homepage.css';
-import NavigationBar from '../components/NavigationBar';
 import { useEffect, useState } from 'react';
 import FlexLayout from '../components/FlexLayout';
 import img_1 from "../assets/1.png";
@@ -24,7 +23,6 @@ function Homepage() {
 
   return (
     <div>
-      <NavigationBar />
       <div className="full-page-bg">
         <FlexLayout direction="horizontal" align="center" style={{ height: '100%' }}>
           <FlexLayout direction="vertical" align="center">

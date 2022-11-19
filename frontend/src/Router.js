@@ -6,8 +6,11 @@ import Homepage from "./pages/Homepage";
 import Profile from "./pages/Profile";
 import Auctions from './pages/Auctions';
 import Marketplace from './pages/Marketplace';
+import Signup from "./pages/Signup";
 import { useEffect, useState } from 'react';
 import userProfilePhoto from './assets/1.png';
+import NavigationBar from "./components/NavigationBar";
+import Login from "./pages/Login";
 
 function Router() {
 
@@ -66,7 +69,9 @@ function Router() {
     return (
         <div style={{ background: '#000' }}>
             <Routes>
-                <Route path="/" element={<Homepage />} />
+                <Route path="/" element={<div><NavigationBar /><Homepage /></div>} />
+                <Route path="/signup" element={<div><NavigationBar /><Signup /></div>} />
+                <Route path="/login" element={<div><NavigationBar /><Login /></div>} />
                 {credentials !== null && authPages}
             </Routes>
         </div>
