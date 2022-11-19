@@ -5,22 +5,21 @@ const PORT = 8000;
 const path = require('path');
 const mongoose = require('mongoose');
 
-
 // this is for parsing incoming JSON requests 
 app.use(express.json())
 
 // setting up routes 
-const products = require('./routes/products'); 
-const users = require('./routes/users'); 
-const auction = require('./routes/auction'); 
-const purchase = require('./routes/purchase'); 
-const selling = require('./routes/selling'); 
+const productsRouter  = require('./routes/products'); 
+const usersRouter     = require('./routes/users'); 
+const auctionRouter   = require('./routes/auction'); 
+const purchaseRouter  = require('./routes/purchase'); 
+const sellingRouter   = require('./routes/selling'); 
 
-app.use('/products', products); 
-app.use('/users', users); 
-app.use('/auction', auction); 
-app.use('/purchase', purchase); 
-app.use('/selling', selling)
+app.use('/products', productsRouter); 
+app.use('/users', usersRouter); 
+app.use('/auction', auctionRouter); 
+app.use('/purchase', purchaseRouter); 
+app.use('/selling', sellingRouter)
 
 
 // setting up database -> remember to start mongodb on machine :D
@@ -33,10 +32,9 @@ database.once('open', () => console.log("<---Database Connected--->"))
 // route for homepage 
 app.get('/', (req, res) => {
     res.status(200)
-    res.sendFile(path.join(__dirname+'/testing.html'));
+    // testing login? idk man 
+    res.sendFile(path.join(__dirname+'/login_test.html'));
 });
-
-
 
 app.listen(PORT, (error) => {
     if (!error)
@@ -44,5 +42,3 @@ app.listen(PORT, (error) => {
     else
         console.log("Error occurred, server can't start", error);
 });
-
-// npm install dotenv for environmnet variable
