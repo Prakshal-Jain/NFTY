@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router()
-module.exports = router;
 
 const User_model = require('../dbModels/user_model');
 
@@ -65,3 +64,7 @@ router.patch('/update/:id', (req, res) => {
 router.delete('/delete/:id', (req, res) => {
     res.send('Delete by ID API')
 })
+
+
+//makes this page accesable to the rest of the application 
+module.exports = router;
