@@ -1,8 +1,9 @@
 const express = require('express');
+require('dotenv').config() 
 const bodyParser = require('body-parser');
 const path = require('path')
 const cookieParser = require('cookie-parser')
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 var products = require('./routes/products'); 
 var users = require('./routes/users'); 
@@ -18,8 +19,13 @@ app.use(cookieParser())
 
 const PORT = 8000;
 
-// trying to set up database 
-// mongoose.connect('mongodb://localhost:27017/myapp');
+// setting up database 
+// make sure you install dotenv 
+mongoose.connect(process.env.DATABASE, { useNewURLParser: true}) 
+const database = mongoose.connection
+database.on('error', (error) => console.error(error))
+database.once('open', () => console.log("---Database Connected---"))
+
 
 // setting up route 
 app.use('/api/products', products); 
