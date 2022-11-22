@@ -29,47 +29,36 @@ router.post('/signup', (req, res) => {
             if (users.length > 0) {
                 res.status(403);
                 res.json({ message: "User already exist. Please login instead." });
+
+            } else {
+                
+                let newUser = new userModel ({
+                    // make sure no HTML attack + check for validity w regrex
+                    username: req.body.email,
+                    password: req.body.password,
+                    purchased_items: [], 
+                    sold_items: [],
+                    balance: "0", 
+                    shopping_cart: [],
+                    auth_token: null
+                })
+                newUser.save(function(err,newUser){
+                    if(err) 
+                    res.send(err)
+                    else 
+                    // res.cookie('auth_token', "BLABLABLA", { maxAge: 900000, httpOnly: true });
+                    res.cookie('auth_token', "BLABLABLA", { maxAge: 900000, httpOnly: true });
+                    res.status(200);
+                    res.json({ message: "User created successfully." });
+                });
             }
-            else {
-                res.cookie('auth_token', "BLABLABLA", { maxAge: 900000, httpOnly: true });
-                res.status(200);
-                res.json({ message: "User created successfully." });
-            }
-        }
-        else {
+        } else {
             res.status(403)
             res.json({ message: "Please enter a valid Username and Password." })
         }
-    }
-    else{
+    } else {
         res.status(400)
         res.json({ message: "Didn't received valid credentials." })
-    }
-    return
-
-    // confirm password check 
-    var password = req.body.password
-    var confirmPassword = req.body.confirmPassword
-    if (password != confirmPassword) {
-        res.status(404);
-        res.redirect('/login?error=' + encodeURIComponent('Incorrect_Credential'));
-    } else {
-        let newUser = new userModel({
-            // make sure no HTML attack + check for validity w regrex
-            username: req.body.email,
-            password: password,
-            purchased_items: [],
-            sold_items: [],
-            balance: "0",
-            shopping_cart: []
-        })
-        newUser.save(function (err, newUser) {
-            if (err)
-                res.send(err)
-            else
-                res.status(200);
-            res.json({ message: "Successfully signed in" });
-        });
     }
 });
 
