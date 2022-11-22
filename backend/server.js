@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const path = require('path')
 // const mongoose = require('mongoose');
 
@@ -10,17 +11,20 @@ var selling = require('./routes/selling');
 
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 const PORT = 8000;
 
 // trying to set up database 
 // mongoose.connect('mongodb://localhost:27017/myapp');
 
 // setting up route 
-app.use('/products', products); 
-app.use('/users', users); 
-app.use('/auction', auction); 
-app.use('/purchase', purchase); 
-app.use('/selling', selling)
+app.use('/api/products', products); 
+app.use('/api/users', users); 
+app.use('/api/auction', auction); 
+app.use('/api/purchase', purchase); 
+app.use('/api/selling', selling)
 
 // route for homepage 
 app.use(express.static(path.join(__dirname, "..", "frontend", "build")))
