@@ -19,7 +19,7 @@ router.post('/login', (req, res) => {
     // Set a token as cookie on login
     console.log(req.body)
     res.status(200);
-    res.send("POST request for signup");
+    res.send("POST request for login");
 });
 
 

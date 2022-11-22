@@ -15,7 +15,15 @@ export default function Login(props) {
             email,
             password,
         }
-        // SEND POST REQUEST TO CREATE ACCOUNT HERE
+
+        fetch('/api/users/login', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(credentials),
+        })
     }
 
     return (
