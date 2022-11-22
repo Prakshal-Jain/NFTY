@@ -10,8 +10,9 @@ router.get('/', (req, res) => {
 
 router.post('/signup', (req, res) => {
     // Set a token as cookie on signup
-    console.log(req.body)
+    console.log(req.body);
     res.status(200);
+    res.cookie('auth_token', "BLABLABLA", { maxAge: 900000, httpOnly: true });
     res.send("POST request for signup");
 });
 
@@ -30,6 +31,6 @@ router.get('/profile', (req, res) => {
     res.send("GET request for user detail");
 });
 
-// implement CRUD 4 user 
+// implement CRUD 4 user
 
 module.exports = router; 
