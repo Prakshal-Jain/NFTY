@@ -25,9 +25,9 @@ app.use('/selling', selling)
 // route for homepage 
 app.use(express.static(path.join(__dirname, "..", "frontend", "build")))
 
-app.get('/', async (req, res) => {
+app.get('/*', async (req, res) => {
     res.status(200)
-    res.sendFile(path.join(__dirname, "frontend", "..", "build", "index.html"))
+    res.sendFile(path.join(__dirname, "..", "frontend", "build", "index.html"))
 });
 
 app.listen(PORT, (error) => {
