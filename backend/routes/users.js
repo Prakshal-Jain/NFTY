@@ -28,7 +28,7 @@ router.get('/profile', (req, res) => {
     console.log(req.cookies)
     res.status(200);
     res.send("GET request for user detail");
-}); 
+});
 
 // implement CRUD 4 user 
 
