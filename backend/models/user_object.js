@@ -2,12 +2,13 @@ const mongoose = require('mongoose');
 
 // ** anything that is a list = list of items 
 const userSchema = new mongoose.Schema({
-    username: String, 
+    email: String,
     password: String, 
     purchased_items: [], 
     sold_items: [],
     balance: String, 
-    shopping_cart: []
+    shopping_cart: [],
+    auth_token: String
 }); 
 
 
