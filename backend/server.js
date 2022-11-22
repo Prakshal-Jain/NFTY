@@ -20,12 +20,11 @@ app.use(cookieParser())
 const PORT = 8000;
 
 // setting up database 
-// make sure you install dotenv 
+// make sure you install dotenv on backend + start database on terminal
 mongoose.connect(process.env.DATABASE, { useNewURLParser: true}) 
 const database = mongoose.connection
 database.on('error', (error) => console.error(error))
 database.once('open', () => console.log("---Database Connected---"))
-
 
 // setting up route 
 app.use('/api/products', products); 
