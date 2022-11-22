@@ -1,5 +1,5 @@
 .item-card-container {
-    color: #fff;
+    color: white;
     margin: 1em;
     background-image: linear-gradient(to right top, #40004b, #330d4e, #251550, #151a4f, #001d4d);
     border-radius: 0.6em;
@@ -7,6 +7,11 @@
     border: 0.1em solid #28282b;
     text-align: center;
     word-wrap: break-word;
+}
+
+.item-card-container > *:hover, .item-card-container > *:link, .item-card-container > *:visited, .item-card-container > *:active {
+    text-decoration: none;
+    color: white;
 }
 
 .card-image{

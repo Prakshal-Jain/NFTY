@@ -29,13 +29,13 @@ function Router() {
         setCredentials({ profilePhoto: userProfilePhoto, username: 'iloveNFT', balance: '1,0023' })
         setUserAuctionItems([
             // Don't send owner --> remove in the backend (redundant)
-            { item_name: "Chromiesquiggle", item_image: "https://pbs.twimg.com/media/EknjjP5X0AAb4_G?format=jpg&name=medium" },
-            { item_name: "Prismatic #661", item_image: "https://pbs.twimg.com/media/FHuIJR4XEAQtT_-?format=jpg&name=medium" },
-            { item_name: "Prismatic #919", item_image: "https://pbs.twimg.com/media/FHuIbbNXIAMh4Dy?format=jpg&name=medium" },
+            { item_name: "Chromiesquiggle", item_image: "https://pbs.twimg.com/media/EknjjP5X0AAb4_G?format=jpg&name=medium", id: "123" },
+            { item_name: "Prismatic #661", item_image: "https://pbs.twimg.com/media/FHuIJR4XEAQtT_-?format=jpg&name=medium", id: "456" },
+            { item_name: "Prismatic #919", item_image: "https://pbs.twimg.com/media/FHuIbbNXIAMh4Dy?format=jpg&name=medium", id: "789" },
         ])
         setUserMarketplaceItems([
             // Don't send owner --> remove in the backend (redundant)
-            { item_name: "Prismatic #225", item_image: "https://pbs.twimg.com/media/FHuIgJVX0AIDKt9?format=jpg&name=medium" },
+            { item_name: "Prismatic #225", item_image: "https://pbs.twimg.com/media/FHuIgJVX0AIDKt9?format=jpg&name=medium", id: "225" },
         ])
 
         setAuctionItems([
