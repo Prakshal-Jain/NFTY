@@ -19,8 +19,6 @@ app.use(cookieParser())
 
 const PORT = 8000;
 
-console.log("============== ENV is: ", process.env.DATABASE)
-
 // setting up database 
 // make sure you install dotenv on backend + start database on terminal
 mongoose.connect((process.env.DATABASE).replace('localhost', 'mongo'), { useNewURLParser: true})
