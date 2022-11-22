@@ -5,13 +5,13 @@ const userModel = require("../dbModels/users_object");
 const bodyParser = require('body-parser');
 
 router.use(bodyParser.urlencoded({ extended: false }));
-
 router.get('/', (req, res) => {
     res.status(200).send("GET request for users");
 }); 
 
 // create new user -- POST Request
 router.post('/create-user', (req, res) => {
+    console.log(req.body)
     // check for confirm password 
     var password = req.body.password
     var confirm = req.body.confirm 
@@ -21,7 +21,7 @@ router.post('/create-user', (req, res) => {
     } else {
         let newUser = new userModel({
             username: req.body.username,
-            password: req.body.password,
+            password: password,
             purchased_items: [], 
             sold_items: [],
             balance: "0", 

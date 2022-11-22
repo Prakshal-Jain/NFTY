@@ -1,6 +1,7 @@
 require('dotenv').config() 
 const express = require('express');
 const app = express();
+// running on a
 const PORT = 8000;
 const path = require('path');
 const mongoose = require('mongoose');
@@ -25,7 +26,7 @@ app.use('/selling', sellingRouter);
 mongoose.connect(process.env.DATABASE, { useNewURLParser: true}) 
 const database = mongoose.connection
 database.on('error', (error) => console.error(error))
-database.once('open', () => console.log("<---Database Connected--->"))
+database.once('open', () => console.log("---Database Connected---"))
 
 
 // route for homepage 
@@ -40,3 +41,5 @@ app.listen(PORT, (error) => {
     else
         console.log("Error occurred, server can't start", error);
 });
+
+// kill server -> sudo lsof -i :8000 // kill -9 ID
