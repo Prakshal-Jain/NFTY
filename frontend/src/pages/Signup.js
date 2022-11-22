@@ -8,7 +8,7 @@ export default function Signup(props) {
     const [confirmPassword, setConfirmPassword] = useState(null);
 
     const handleSignup = () => {
-        if(email === null || password === null || confirmPassword === null || email.length === 0 || password.length === 0 || confirmPassword.length === 0){
+        if (email === null || password === null || confirmPassword === null || email.length === 0 || password.length === 0 || confirmPassword.length === 0) {
             return
         }
 
@@ -18,6 +18,14 @@ export default function Signup(props) {
             confirmPassword
         }
         // SEND POST REQUEST TO CREATE ACCOUNT HERE
+        fetch('/api/users/signup', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(credentials),
+        })
     }
 
     return (
