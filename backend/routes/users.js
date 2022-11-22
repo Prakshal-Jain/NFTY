@@ -3,6 +3,7 @@ var router = express.Router();
 const mongoose = require('mongoose');
 const userModel = require("../models/user_object"); 
 const bodyParser = require('body-parser');
+const utilities = require('../utilities')
 
 // Base path: "/api/users"
 
@@ -13,9 +14,16 @@ router.get('/', (req, res) => {
 
 router.post('/signup', (req, res) => {
     // Set a token as cookie on signup
+    if(req.body !== null || Object.keys(req.body) > 0){
+        if(req.body.email !== undefined && req.body.email !== null && utilities.validateEmail(req.body.email) && req.body.password !== undefined && req.body.password !== null && req.body.password.length > 0 && req.body.confirmPassword !== undefined && req.body.confirmPassword !== null && req.body.confirmPassword.length > 0 && req.body.password === req.body.confirmPassword){
+            console.log("CORRECT USERNAME PASSWORD: ");
+        }
+    }
+
     res.cookie('auth_token', "BLABLABLA", { maxAge: 900000, httpOnly: true });
     res.send("POST request for signup");
-
+    return
+    
     // confirm password check 
     var password = req.body.password
     var confirmPassword = req.body.confirmPassword
