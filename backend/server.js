@@ -25,6 +25,8 @@ app.use('/selling', selling)
 // route for homepage 
 app.use(express.static(path.join(__dirname, "..", "frontend", "build")))
 
+
+// ================ Note by Prakshal: Make all the API calls above this line. Any call below this will be ignored
 app.get('/*', async (req, res) => {
     res.status(200)
     res.sendFile(path.join(__dirname, "..", "frontend", "build", "index.html"))
