@@ -108,11 +108,32 @@ router.post('/login', (req, res) => {
 
 
 router.get('/profile', (req, res) => {
-    // Get the token cookie and check if it is exist and valid. Is true, return data related to the corresponding user.
-    console.log(req.cookies)
-    res.status(200);
-    res.send("GET request for user detail");
-});
+    // Get the token cookie and check if it is exist and valid. If true, return data related to the corresponding user.
+    console.log(req.cookies) 
+    userModel.find({ auth_token: req.cookies.auth_token }, async (err, token_list) => {
+        if (err) {
+            console.log(err);
+        } else {
+            if (token_list.length == 0) {
+                res.status(403);
+                res.json({ message: "Profile Not Found" });
+            } else {
+                const user = token_list[0]; 
+                console.log(user)
+                const dict = {
+                    email: user.email,
+                    purchased_items: user.purchased_items,
+                    sold_items: user.sold_items, 
+                    balance: user.balance,
+                    shopping_cart: user.shopping_cart
+                }; 
+                
+                console.log(dict); 
+                res.json(dict); 
+            }
+        }
+    });
+}); 
 
 // implement CRUD 4 user
 
