@@ -60,7 +60,7 @@ function Router() {
     }
 
     const authPages = [
-        <Route path="/profile" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><Profile credentials={credentials} userAuctionItems={userAuctionItems} userMarketplaceItems={userMarketplaceItems} /></div>} />,
+        <Route path="/profile" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><Profile credentials={credentials} setCredentials={setCredentials} userAuctionItems={userAuctionItems} userMarketplaceItems={userMarketplaceItems} /></div>} />,
         <Route path="/auctions" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><Auctions auctionItems={auctionItems} /></div>} />,
         <Route path="/marketplace" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><Marketplace marketplaceItems={marketplaceItems} /></div>} />
     ]

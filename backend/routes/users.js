@@ -82,11 +82,17 @@ router.post('/login', (req, res) => {
                     const isValidPassword = await utilities.validatePassword(req.body.password, user.password);
                     if (isValidPassword) {
                         const uniqueValidToken = utilities.generateUniqueValidToken(27);
-                        await userModel.updateOne(user, {$set: {...user, auth_token: uniqueValidToken}})
-
-                        res.cookie('auth_token', uniqueValidToken, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
-                        res.status(200);
-                        res.json({ message: "Logged in successfully." });
+                        userModel.updateOne({email: user.email}, {$set: {auth_token: uniqueValidToken}}, (err, data) => {
+                            if(err){
+                                res.status(500);
+                                res.json({ message: "An error occured." });
+                            }
+                            else{
+                                res.cookie('auth_token', uniqueValidToken, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
+                                res.status(200);
+                                res.json({ message: "Logged in successfully." });
+                            }
+                        })
                     }
                     else {
                         res.status(403);
@@ -109,12 +115,11 @@ router.post('/login', (req, res) => {
 
 router.get('/profile', (req, res) => {
     // Get the token cookie and check if it is exist and valid. If true, return data related to the corresponding user.
-    console.log(req.cookies) 
     userModel.find({ auth_token: req.cookies.auth_token }, async (err, token_list) => {
         if (err) {
             console.log(err);
         } else {
-            if (token_list.length == 0) {
+            if (token_list.length === 0) {
                 res.status(403);
                 res.json({ message: "Profile Not Found" });
             } else {

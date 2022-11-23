@@ -3,6 +3,7 @@ import AuthNavBar from "../components/AuthNavBar";
 import { Row, Col } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image'
 import ItemCard from "../components/ItemCard";
+import { useEffect } from "react";
 
 function DividerSection(props) {
     return (
@@ -16,6 +17,21 @@ function DividerSection(props) {
 }
 
 function Profile(props) {
+    useEffect(async () => {
+        fetch('/api/users/profile')
+            .then((res) => {
+                if(res.status === 200){
+                    return res.json();
+                }
+                else{
+                    // Set error message here
+                    console.log(res.message);
+                }
+            })
+            .then((data) => console.log(data));
+    }, [])
+
+
     if (props.credentials == null) {
         return null;
     }
