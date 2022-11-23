@@ -89,7 +89,7 @@ router.post('/login', (req, res) => {
                         res.json({ message: "Logged in successfully." });
                     }
                     else {
-                        res.status(403)
+                        res.status(403);
                         res.json({ message: "Please enter a valid Username and Password." });
                     }
                 }
