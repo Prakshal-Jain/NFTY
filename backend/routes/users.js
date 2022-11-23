@@ -46,7 +46,7 @@ router.post('/signup', (req, res) => {
                             else {
                                 res.cookie('auth_token', newUser.auth_token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
                                 res.status(200);
-                                res.json({ message: "User created successfully." });
+                                res.redirect("/profile");                             
                             }
                         });
                     }
@@ -86,7 +86,7 @@ router.post('/login', (req, res) => {
 
                         res.cookie('auth_token', uniqueValidToken, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
                         res.status(200);
-                        res.json({ message: "Logged in successfully." });
+                        res.redirect("/profile");
                     }
                     else {
                         res.status(403);
