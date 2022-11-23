@@ -1,4 +1,5 @@
 const userModel = require("./models/user_object");
+const bcrypt = require("bcrypt")
 
 function validateEmail(email) {
     var re = /\S+@\S+\.\S+/;
@@ -28,4 +29,15 @@ function generateUniqueValidToken(n = 27) {
     return randomString;
 }
 
-module.exports = { validateEmail, generateRandomString, generateUniqueValidToken }
+async function hashPassword(password) {
+    const salt = await bcrypt.genSalt(10)
+    const hashed = await bcrypt.hash(password, salt);
+    return hashed;
+}
+
+async function validatePassword(password, encrypted_correct_password) {
+    const isValid = await bcrypt.compare(password, encrypted_correct_password);
+    return isValid;
+}
+
+module.exports = { validateEmail, generateRandomString, generateUniqueValidToken, hashPassword, validatePassword }

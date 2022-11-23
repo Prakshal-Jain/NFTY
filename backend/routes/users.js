@@ -13,10 +13,9 @@ router.get('/', (req, res) => {
 });
 
 router.post('/signup', (req, res) => {
-    // Set a token as cookie on signup
     if (req.body !== null || Object.keys(req.body) > 0) {
         if (req.body.email !== undefined && req.body.email !== null && utilities.validateEmail(req.body.email) && req.body.password !== undefined && req.body.password !== null && req.body.password.length > 0 && req.body.confirmPassword !== undefined && req.body.confirmPassword !== null && req.body.confirmPassword.length > 0 && req.body.password === req.body.confirmPassword) {
-            userModel.find({ email: req.body.email }, (err, user_list) => {
+            userModel.find({ email: req.body.email }, async (err, user_list) => {
                 if (err) {
                     console.log(err);
                 }
@@ -28,11 +27,12 @@ router.post('/signup', (req, res) => {
                     else {
                         // Generate an auth token
                         const uniqueValidToken = utilities.generateUniqueValidToken(27);
+                        const hashedPassword = await utilities.hashPassword(req.body.password);
 
                         const newUser = new userModel({
                             // make sure no HTML attack + check for validity w regrex
                             email: req.body.email,
-                            password: req.body.password,
+                            password: hashedPassword,
                             purchased_items: [],
                             sold_items: [],
                             balance: "0",
@@ -55,19 +55,55 @@ router.post('/signup', (req, res) => {
         }
         else {
             res.status(403)
-            res.json({ message: "Please enter a valid Username and Password." })
+            res.json({ message: "Please enter a valid Username and Password." });
         }
     }
     else {
         res.status(400)
-        res.json({ message: "Didn't received valid credentials." })
+        res.json({ message: "Didn't received valid credentials." });
     }
 });
 
 router.post('/login', (req, res) => {
-    // Set a token as cookie on login
-    res.status(200);
-    res.send("POST request for login");
+    if (req.body !== null || Object.keys(req.body) > 0) {
+        if (req.body.email !== undefined && req.body.email !== null && utilities.validateEmail(req.body.email) && req.body.password !== undefined && req.body.password !== null && req.body.password.length > 0) {
+            userModel.find({ email: req.body.email }, async (err, user_list) => {
+                if (err) {
+                    console.log("Database error in login");
+                }
+
+                if (user_list.length === 0) {
+                    res.status(403)
+                    res.json({ message: "Incorrect email or password. Please try again." });
+                }
+                else {
+                    const user = user_list[0];
+                    // Check if passwords match
+                    const isValidPassword = await utilities.validatePassword(req.body.password, user.password);
+                    if (isValidPassword) {
+                        const uniqueValidToken = utilities.generateUniqueValidToken(27);
+                        await userModel.updateOne(user, {$set: {...user, auth_token: uniqueValidToken}})
+
+                        res.cookie('auth_token', uniqueValidToken, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
+                        res.status(200);
+                        res.json({ message: "Logged in successfully." });
+                    }
+                    else {
+                        res.status(403)
+                        res.json({ message: "Please enter a valid Username and Password." });
+                    }
+                }
+            })
+        }
+        else {
+            res.status(403)
+            res.json({ message: "Please enter a valid Username and Password." });
+        }
+    }
+    else {
+        res.status(400)
+        res.json({ message: "Didn't received valid credentials." });
+    }
 });
 
 
