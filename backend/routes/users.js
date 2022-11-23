@@ -119,17 +119,15 @@ router.get('/profile', (req, res) => {
                 res.json({ message: "Profile Not Found" });
             } else {
                 const user = token_list[0]; 
-                console.log(user)
                 const dict = {
                     email: user.email,
                     purchased_items: user.purchased_items,
                     sold_items: user.sold_items, 
                     balance: user.balance,
                     shopping_cart: user.shopping_cart
-                }; 
-                
-                console.log(dict); 
-                res.json(dict); 
+                };
+                res.status(200);
+                res.json(dict);
             }
         }
     });
