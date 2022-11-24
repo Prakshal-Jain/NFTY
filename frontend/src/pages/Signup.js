@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import { Card, Col, Row, Form, Button } from 'react-bootstrap';
+import { Card, Col, Row, Form, Button, Alert } from 'react-bootstrap';
+import { Navigate } from "react-router-dom";
 import "./css/signup.css"
 
 export default function Signup(props) {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const [confirmPassword, setConfirmPassword] = useState(null);
+    const [redirect, setRedirect] = useState(null);
+    const [error, setError] = useState(null);
 
     const handleSignup = () => {
-        if (email === null || password === null || confirmPassword === null || email.length === 0 || password.length === 0 || confirmPassword.length === 0) {
-            return
-        }
-
         const credentials = {
             email,
             password,
@@ -26,6 +25,22 @@ export default function Signup(props) {
             },
             body: JSON.stringify(credentials),
         })
+            .then(async (res) => {
+                const data = await res.json();
+                if (res.status !== 200) {
+                    setError(data.message);
+                }
+                else {
+                    setRedirect("/profile");
+                }
+            });
+    }
+
+    if (redirect !== null) {
+        return (
+            <Navigate to={redirect} />
+        )
+
     }
 
     return (
@@ -63,6 +78,12 @@ export default function Signup(props) {
                     onChange={(event) => setConfirmPassword(event.target.value)}
                     key="basic-confirm-password"
                 />
+
+                {error && (
+                    <Alert variant="danger">
+                        {error}
+                    </Alert>
+                )}
 
                 <Button variant="dark" onClick={handleSignup}>Signup</Button>
             </Card>

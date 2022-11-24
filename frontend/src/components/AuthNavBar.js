@@ -21,7 +21,7 @@ function AuthNavBar(props) {
                     </Nav>
                     {props.credentials !== null && (
                         <Nav>
-                            <NavDropdown title={<Image src={props.credentials.profilePhoto} roundedCircle={true} width={30} />}>
+                            <NavDropdown title={props.credentials.email.split("@")[0]}>
                                 <NavDropdown.Item href="/profile">
                                     Profile
                                 </NavDropdown.Item>

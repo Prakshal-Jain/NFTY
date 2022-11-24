@@ -46,7 +46,7 @@ router.post('/signup', (req, res) => {
                             else {
                                 res.cookie('auth_token', newUser.auth_token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
                                 res.status(200);
-                                res.redirect("/profile");                             
+                                res.json({message: "User signed up successfully."});
                             }
                         });
                     }
@@ -118,7 +118,8 @@ router.get('/profile', (req, res) => {
     userModel.find({ auth_token: req.cookies.auth_token }, async (err, token_list) => {
         if (err) {
             console.log(err);
-        } else {
+        } 
+        else {
             if (token_list.length === 0) {
                 res.status(403);
                 res.json({ message: "Profile Not Found" });

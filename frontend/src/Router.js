@@ -26,7 +26,6 @@ function Router() {
 
     // ======================== Replace this with actual call to server to set credentials and user data
     useEffect(() => {
-        setCredentials({ profilePhoto: userProfilePhoto, username: 'iloveNFT', balance: '1,0023' })
         setUserAuctionItems([
             // Don't send owner --> remove in the backend (redundant)
             { item_name: "Chromiesquiggle", item_image: "https://pbs.twimg.com/media/EknjjP5X0AAb4_G?format=jpg&name=medium", id: "123" },
@@ -60,7 +59,7 @@ function Router() {
     }
 
     const authPages = [
-        <Route path="/profile" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><Profile credentials={credentials} setCredentials={setCredentials} userAuctionItems={userAuctionItems} userMarketplaceItems={userMarketplaceItems} /></div>} />,
+        <Route path="/profile" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><Profile credentials={credentials} userAuctionItems={userAuctionItems} userMarketplaceItems={userMarketplaceItems} setCredentials={setCredentials} /></div>} />,
         <Route path="/auctions" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><Auctions auctionItems={auctionItems} /></div>} />,
         <Route path="/marketplace" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><Marketplace marketplaceItems={marketplaceItems} /></div>} />
     ]
@@ -72,7 +71,7 @@ function Router() {
                 <Route path="/" element={<div><NavigationBar /><Homepage /></div>} />
                 <Route path="/signup" element={<div><NavigationBar /><Signup /></div>} />
                 <Route path="/login" element={<div><NavigationBar /><Login /></div>} />
-                {credentials !== null && authPages}
+                {authPages}
             </Routes>
         </div>
     )

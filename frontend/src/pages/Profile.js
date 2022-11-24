@@ -1,5 +1,5 @@
 import "./css/profile.css";
-import AuthNavBar from "../components/AuthNavBar";
+import userProfilePhoto from '../assets/1.png';
 import { Row, Col } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image'
 import ItemCard from "../components/ItemCard";
@@ -19,16 +19,16 @@ function DividerSection(props) {
 function Profile(props) {
     useEffect(async () => {
         fetch('/api/users/profile')
-            .then((res) => {
+            .then(async (res) => {
+                const data = await res.json();
+                console.log(data);
                 if(res.status === 200){
-                    return res.json();
+                    props.setCredentials(data);
                 }
                 else{
-                    // Set error message here
-                    console.log(res.message);
+                    console.log("Error fetching profile.")
                 }
             })
-            .then((data) => console.log(data));
     }, [])
 
 
@@ -39,13 +39,13 @@ function Profile(props) {
         <Row style={{ padding: '2em', justifyContent: "space-between" }}>
             <Col>
                 <DividerSection>
-                    <h3 style={{ color: 'white' }}>Your Auction Items</h3>
-                    <ItemCard list={props.userAuctionItems} />
+                    <h3 style={{ color: 'white' }}>Your Purchased Items</h3>
+                    <ItemCard list={props.purchased_items} />
                 </DividerSection>
 
                 <DividerSection>
-                    <h3 style={{ color: 'white' }}>Your Marketplace Items</h3>
-                    <ItemCard list={props.userMarketplaceItems} />
+                    <h3 style={{ color: 'white' }}>Your Sold Items</h3>
+                    <ItemCard list={props.sold_items} />
                 </DividerSection>
             </Col>
 
@@ -54,12 +54,12 @@ function Profile(props) {
                 <h2 className="profile-rows">My Profile</h2>
                 <Row className="profile-rows">
                     <Col>
-                        <Image src={props.credentials.profilePhoto} width={100} roundedCircle={true} />
+                        <Image src={userProfilePhoto} width={100} roundedCircle={true} />
                     </Col>
                 </Row>
                 <Row className="profile-rows">
                     <Col style={{ fontWeight: 'bold' }}>
-                        @{props.credentials.username}
+                        @{props.credentials.email.split("@")[0]}
                     </Col>
                 </Row>
                 <hr />

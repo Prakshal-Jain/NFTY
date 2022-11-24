@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Card, Col, Row, Form, Button } from 'react-bootstrap';
+import { Navigate } from "react-router-dom";
 import "./css/signup.css"
 
 export default function Login(props) {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
+    const [redirect, setRedirect] = useState(null);
+    const [error, setError] = useState(null);
 
     const handleLogin = () => {
         if (email === null || password === null || email.length === 0 || password.length === 0) {
@@ -24,6 +27,22 @@ export default function Login(props) {
             },
             body: JSON.stringify(credentials),
         })
+            .then(async (res) => {
+                const data = await res.json();
+                if (res.status !== 200) {
+                    setError(data.message);
+                }
+                else {
+                    setRedirect("/profile");
+                }
+            });
+    }
+
+    if (redirect !== null) {
+        return (
+            <Navigate to={redirect} />
+        )
+
     }
 
     return (
