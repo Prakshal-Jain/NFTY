@@ -10,10 +10,6 @@ export default function Login(props) {
     const [error, setError] = useState(null);
 
     const handleLogin = () => {
-        if (email === null || password === null || email.length === 0 || password.length === 0) {
-            return
-        }
-
         const credentials = {
             email,
             password,
@@ -38,12 +34,11 @@ export default function Login(props) {
             });
     }
 
-    if (redirect !== null) {
-        return (
-            <Navigate to={redirect} />
-        )
-
-    }
+    // if (redirect !== null) {
+    //     return (
+    //         <Navigate to={redirect} />
+    //     )
+    // }
 
     return (
         <div className="form-container">
