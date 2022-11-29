@@ -30,12 +30,11 @@ router.post('/signup', (req, res) => {
                         const hashedPassword = await utilities.hashPassword(req.body.password);
 
                         const newUser = new userModel({
-                            // make sure no HTML attack + check for validity w regrex
                             email: req.body.email,
                             password: hashedPassword,
                             purchased_items: [],
                             sold_items: [],
-                            balance: "0",
+                            balance: 0,
                             shopping_cart: [],
                             auth_token: uniqueValidToken
                         })
@@ -138,7 +137,5 @@ router.get('/profile', (req, res) => {
         }
     });
 }); 
-
-// implement CRUD 4 user
 
 module.exports = router;
