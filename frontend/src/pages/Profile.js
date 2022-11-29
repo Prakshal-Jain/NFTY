@@ -30,7 +30,6 @@ function Profile(props) {
                             props.setCredentials(data);
                         }
                         else {
-                            console.log("send redirect");
                             setRedirect(true);
                         }
                     }
