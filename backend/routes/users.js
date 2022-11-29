@@ -138,4 +138,34 @@ router.get('/profile', (req, res) => {
     });
 }); 
 
+
+router.get('/logout', (req,res) => {
+    const auth_token = req.cookies.auth_token;
+    // go into user detail -> get auth_token -> clear
+    userModel.find({ auth_token: auth_token }, async (err, token_list) => {
+        if (err) {
+            console.log(err);
+        } 
+        else {
+            if (token_list.length === 0) {
+                res.clearCookie('auth_token'); 
+                res.status(403);
+                res.json({ message: "User Not Found" });
+            } else {
+                res.clearCookie('auth_token'); 
+                userModel.updateOne({auth_token: token_list[0].auth_token}, {$set: {auth_token: null}}, (err, data) => {
+                    if(err){
+                        res.status(500);
+                        res.json({ message: "An error occured." });
+                    }
+                    else{
+                        res.status(200);
+                        res.json({ message: "Logged out successfully." });
+                    }
+                });
+            }
+        }
+    }); 
+}); 
+
 module.exports = router;

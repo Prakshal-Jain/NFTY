@@ -1,6 +1,8 @@
 var express = require("express");
 var router = express.Router(); 
 
+// need to implement auction 
+
 // "/auction"
 router.get('/', (req, res) => {
     res.status(200); 
