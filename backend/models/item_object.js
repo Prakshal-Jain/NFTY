@@ -1,13 +1,13 @@
 const mongoose = require('mongoose'); 
 const userModel = require('./user_object')
+const auctionModel = require('./auction_object')
 
 // schema for item infos, each item saved on our website will go onto this schema 
 const objectSchema = new mongoose.Schema({
     item_name: String,
     item_image: String,
     description: String, 
-    // if auction detail len != 0 -> item being bid?, or we can set a flag here 
-    auction_detail: [], 
+    auction_detail: [auctionModel], 
     price: String,
     owner: userModel
 });

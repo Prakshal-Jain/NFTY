@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
+const itemModel = require('./item_objects'); 
+
 
 // ** anything that is a list = list of items 
 const userSchema = new mongoose.Schema({
     email: String,
     password: String, 
-    purchased_items: [], 
-    sold_items: [],
-    balance: String, 
-    shopping_cart: [],
+    purchased_items: [itemModel], 
+    sold_items: [itemModel],
+    balance: Number, 
+    shopping_cart: [itemModel],
     auth_token: String
 }); 
 
