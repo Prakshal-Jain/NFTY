@@ -1,5 +1,5 @@
 import {
-    Routes, Route, useNavigate
+    Routes, Route
 } from "react-router-dom";
 import AuthNavBar from "./components/AuthNavBar";
 import Homepage from "./pages/Homepage";
@@ -8,7 +8,6 @@ import Auctions from './pages/Auctions';
 import Marketplace from './pages/Marketplace';
 import Signup from "./pages/Signup";
 import { useEffect, useState } from 'react';
-import userProfilePhoto from './assets/1.png';
 import NavigationBar from "./components/NavigationBar";
 import Login from "./pages/Login";
 
@@ -50,12 +49,8 @@ function Router() {
         ])
     }, [])
 
-
-    const navigate = useNavigate();
-
     const onLogout = () => {
         setCredentials(null);
-        navigate('/');
     }
 
     const authPages = [

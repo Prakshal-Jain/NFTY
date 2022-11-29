@@ -1,9 +1,40 @@
+import { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import { Navigate } from "react-router-dom";
 
 function AuthNavBar(props) {
+    const [redirect, setRedirect] = useState(false);
+    const [error, setError] = useState(null)
+
+    const onLogOut = async () => {
+        fetch('/api/users/logout')
+        .then(async (res) => {
+            try {
+                const data = await res.json();
+                if (res.status === 200) {
+                    setRedirect(true);
+                }
+                else {
+                    setError(data);
+                    setRedirect(false);
+                }
+            }
+            catch (err) {
+                setError("An error occured.");
+                setRedirect(false);
+            }
+        })
+        props.onLogout();
+        setRedirect(true);
+    }
+
+    if(redirect){
+        return <Navigate to={"/login"} />
+    }
+
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Container>
@@ -21,7 +52,7 @@ function AuthNavBar(props) {
                                     Profile
                                 </NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item onClick={props.onLogout}>Logout</NavDropdown.Item>
+                                <NavDropdown.Item onClick={onLogOut}>Logout</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                     )}

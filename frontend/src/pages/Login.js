@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Col, Row, Form, Button } from 'react-bootstrap';
+import { Card, Col, Row, Form, Button, Alert } from 'react-bootstrap';
 import { Navigate } from "react-router-dom";
 import "./css/signup.css"
 
@@ -34,11 +34,11 @@ export default function Login(props) {
             });
     }
 
-    // if (redirect !== null) {
-    //     return (
-    //         <Navigate to={redirect} />
-    //     )
-    // }
+    if (redirect !== null) {
+        return (
+            <Navigate to={redirect} />
+        )
+    }
 
     return (
         <div className="form-container">
@@ -66,6 +66,12 @@ export default function Login(props) {
                     onChange={(event) => setPassword(event.target.value)}
                     key="password"
                 />
+
+                {error && (
+                    <Alert variant="danger">
+                        {error}
+                    </Alert>
+                )}
 
                 <Button variant="dark" onClick={handleLogin}>Login</Button>
             </Card>
