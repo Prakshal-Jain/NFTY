@@ -52,7 +52,6 @@ const upload = multer({
 
 // uploading a new item 
 router.post('/', upload.single('item_image'), async (req, res, next) => {
-    console.log(req.query.item_type)
     const user = await utilities.authenticateUser(req.cookies.auth_token)
     if (user === null) {
         res.status(401);

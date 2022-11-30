@@ -9,7 +9,7 @@ var products = require('./routes/products');
 var users = require('./routes/users');
 var auction = require('./routes/auction');
 var purchase = require('./routes/purchase');
-var marketplace = require('./routes/marketplace');
+var items = require('./routes/items');
 
 
 const app = express();
@@ -31,7 +31,7 @@ app.use('/api/products', products);
 app.use('/api/users', users);
 app.use('/api/auction', auction);
 app.use('/api/purchase', purchase);
-app.use('/api/marketplace', marketplace);
+app.use('/api/items', items);
 
 // route for homepage 
 app.use(express.static(path.join(__dirname, "..", "frontend", "build")));

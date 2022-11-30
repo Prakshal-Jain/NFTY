@@ -22,7 +22,6 @@ function Router() {
 
     // All auction and marketplace items in the database
     const [auctionItems, setAuctionItems] = useState(null);
-    const [marketplaceItems, setMarketplaceItems] = useState(null);
 
     const onLogout = () => {
         setCredentials(null);
@@ -30,8 +29,8 @@ function Router() {
 
     const authPages = [
         <Route path="/profile" element={<div><AuthNavBar credentials={credentials} setCredentials={setCredentials} onLogout={onLogout} /><Profile credentials={credentials} userAuctionItems={userAuctionItems} userMarketplaceItems={userMarketplaceItems} setCredentials={setCredentials} /></div>} />,
-        <Route path="/auctions" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><Auctions auctionItems={auctionItems} /></div>} />,
-        <Route path="/marketplace" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><Marketplace marketplaceItems={marketplaceItems} /></div>} />,
+        <Route path="/auctions" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><Auctions /></div>} />,
+        <Route path="/marketplace" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><Marketplace /></div>} />,
         <Route path="/marketplace-sell" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><SellMarketplace /></div>} />,
     ]
 
