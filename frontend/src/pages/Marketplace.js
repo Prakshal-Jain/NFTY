@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col, Button, Modal, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ItemCard from "../components/ItemCard";
 import { useNavigate } from "react-router-dom";
@@ -7,8 +7,13 @@ import { useNavigate } from "react-router-dom";
 export default function Marketplace(props) {
     const [marketplaceItems, setMarketplaceItems] = useState(null);
     const [error, setError] = useState(null);
+    const [modalDetails, setShowModal] = useState(null);
 
     const navigate = useNavigate();
+
+    const showModal = (item) => {
+        setShowModal(item);
+    }
 
     useEffect(() => {
         (async () => {
@@ -44,7 +49,26 @@ export default function Marketplace(props) {
                         </Link>
                     </Col>
                 </Row>
-                <ItemCard list={marketplaceItems} />
+                <ItemCard showModal={showModal} list={marketplaceItems} />
+
+
+                <Modal show={modalDetails !== null} onHide={() => setShowModal(null)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Details</Modal.Title>
+                    </Modal.Header>
+                    <h3 className="m-2" style={{ textAlign: 'center' }}>{modalDetails?.item_name}</h3>
+                    <Row>
+                        <Col style={{ alignItems: 'center' }}>
+                            <Image src={modalDetails?.item_image} className="m-2" style={{ maxHeight: 200, width: '100%', borderRadius: '0.5em', objectFit: 'cover' }} />
+                        </Col>
+                    </Row>
+                    <Modal.Body>{modalDetails?.description}</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="success" onClick={() => setShowModal(null)}>
+                            Buy this NFT
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </Col>
         </Row>
     )

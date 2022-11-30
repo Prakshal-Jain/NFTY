@@ -23,7 +23,7 @@ function AuthNavBar(props) {
                         }
                     }
                     catch (err) {
-                        setRedirect(true);
+                        // setRedirect(true);
                     }
                 })
         })();
