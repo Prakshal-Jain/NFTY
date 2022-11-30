@@ -1,35 +1,39 @@
 const express = require('express');
-require('dotenv').config() 
+require('dotenv').config()
 const bodyParser = require('body-parser');
+let multer = require('multer');
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose');
 
-var products = require('./routes/products'); 
-var users = require('./routes/users'); 
-var auction = require('./routes/auction'); 
-var purchase = require('./routes/purchase'); 
-var marketplace = require('./routes/marketplace'); 
+var products = require('./routes/products');
+var users = require('./routes/users');
+var auction = require('./routes/auction');
+var purchase = require('./routes/purchase');
+var marketplace = require('./routes/marketplace');
 
 
 const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb', parameterLimit: 50000 }));
+app.use(bodyParser.json({ limit: '50mb' }));
+
+let upload = multer();
+app.use(upload.array());
 app.use(cookieParser())
 
 const PORT = 8000;
 
 // setting up database 
 // make sure you install dotenv on backend + start database on terminal
-mongoose.connect((process.env.DATABASE).replace('localhost', 'mongo'), { useNewURLParser: true})
+mongoose.connect((process.env.DATABASE).replace('localhost', 'mongo'), { useNewURLParser: true })
 const database = mongoose.connection
 database.on('error', (error) => console.error(error))
 database.once('open', () => console.log("---Database Connected---"))
 
 // setting up route 
-app.use('/api/products', products); 
-app.use('/api/users', users); 
-app.use('/api/auction', auction); 
+app.use('/api/products', products);
+app.use('/api/users', users);
+app.use('/api/auction', auction);
 app.use('/api/purchase', purchase);
 app.use('/api/marketplace', marketplace);
 

@@ -12,20 +12,16 @@ export default function (props) {
     const [error, setError] = useState(null);
 
     const handleSubmit = async () => {
-        const item = {
-            item_name,
-            item_image,
-            description,
-            price
-        }
+        const file = new FormData()
+        file.append('item_image', item_image);
+        file.append('item_name', item_name);
+        file.append('description', description);
+        file.append('price', price);
 
         fetch('/api/marketplace', {
             method: 'POST',
             credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(item),
+            body: file,
         })
             .then(async (res) => {
                 try {
@@ -76,7 +72,7 @@ export default function (props) {
                         aria-label="Item Image"
                         aria-describedby="item-image"
                         className="w-100 mb-4"
-                        onChange={(event) => setItemImage(event.target.value)}
+                        onChange={(event) => setItemImage(event.target.files[0])}
                         key="item-image"
                     />
 
