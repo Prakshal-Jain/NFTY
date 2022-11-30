@@ -15,8 +15,7 @@ var marketplace = require('./routes/marketplace');
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb', parameterLimit: 50000 }));
 app.use(bodyParser.json({ limit: '50mb' }));
-
-app.use(cookieParser())
+app.use(cookieParser());
 
 const PORT = 8000;
 
