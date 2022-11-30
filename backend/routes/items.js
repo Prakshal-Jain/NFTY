@@ -22,8 +22,16 @@ router.get('/all-marketplace-items', async (req, res) => {
             res.status(500).send('An error occurred', err);
         }
         else {
+            const item_list = items.map(item => {
+                item["_id"] = undefined;
+                item["__v"] = undefined;
+                item["owner"] = undefined;
+                item["item_type"] = undefined;
+                item["auction_detail"] = undefined;
+                return item;
+            });
             res.status(200);
-            res.json({ items: items });
+            res.json(item_list);
         }
     });
 });
@@ -64,7 +72,7 @@ router.post('/', upload.single('item_image'), async (req, res, next) => {
         res.json({ message: "Invalid Item Type." });
         return
     }
-    
+
     userModel.find({ auth_token: req.cookies.auth_token }, async (err, token_list) => {
         if (err) {
             console.log(err);

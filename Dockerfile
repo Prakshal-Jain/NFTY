@@ -6,8 +6,8 @@ WORKDIR /root
 COPY . .
 
 # Download dependancies
-RUN npm install --prefix ./frontend
-RUN npm run build --prefix ./frontend
+# RUN npm install --prefix ./frontend
+# RUN npm run build --prefix ./frontend
 RUN npm install --prefix ./backend
 EXPOSE 8000
 

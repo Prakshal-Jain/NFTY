@@ -44,7 +44,7 @@ export default function Marketplace(props) {
                         </Link>
                     </Col>
                 </Row>
-                <ItemCard list={marketplaceItems?.items} />
+                <ItemCard list={marketplaceItems} />
             </Col>
         </Row>
     )
