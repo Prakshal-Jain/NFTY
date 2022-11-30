@@ -22,6 +22,8 @@ const imageSchema = new mongoose.Schema({
     },
   });
 
+const imageModel = mongoose.model("Image", imageSchema); 
+
 // schema for item infos, each item saved on our website will go onto this schema 
 const objectSchema = new mongoose.Schema({
     item_name: String,
@@ -34,4 +36,4 @@ const objectSchema = new mongoose.Schema({
 });
 
 const objectModel = mongoose.model("Object", objectSchema); 
-module.exports = {objectModel, objectSchema}
+module.exports = {objectModel, objectSchema, imageModel};
