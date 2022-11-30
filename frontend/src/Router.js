@@ -6,6 +6,7 @@ import Homepage from "./pages/Homepage";
 import Profile from "./pages/Profile";
 import Auctions from './pages/Auctions';
 import Marketplace from './pages/Marketplace';
+import SellMarketplace from './pages/SellMarketplace';
 import Signup from "./pages/Signup";
 import { useEffect, useState } from 'react';
 import NavigationBar from "./components/NavigationBar";
@@ -25,28 +26,6 @@ function Router() {
 
     // ======================== Replace this with actual call to server to set credentials and user data
     useEffect(() => {
-        setUserAuctionItems([
-            // Don't send owner --> remove in the backend (redundant)
-            { item_name: "Chromiesquiggle", item_image: "https://pbs.twimg.com/media/EknjjP5X0AAb4_G?format=jpg&name=medium", id: "123" },
-            { item_name: "Prismatic #661", item_image: "https://pbs.twimg.com/media/FHuIJR4XEAQtT_-?format=jpg&name=medium", id: "456" },
-            { item_name: "Prismatic #919", item_image: "https://pbs.twimg.com/media/FHuIbbNXIAMh4Dy?format=jpg&name=medium", id: "789" },
-        ])
-        setUserMarketplaceItems([
-            // Don't send owner --> remove in the backend (redundant)
-            { item_name: "Prismatic #225", item_image: "https://pbs.twimg.com/media/FHuIgJVX0AIDKt9?format=jpg&name=medium", id: "225" },
-        ])
-
-        setAuctionItems([
-            { item_name: "Chromiesquiggle", item_image: "https://pbs.twimg.com/media/EknjjP5X0AAb4_G?format=jpg&name=medium" },
-            { item_name: "Prismatic #661", item_image: "https://pbs.twimg.com/media/FHuIJR4XEAQtT_-?format=jpg&name=medium" },
-            { item_name: "Prismatic #919", item_image: "https://pbs.twimg.com/media/FHuIbbNXIAMh4Dy?format=jpg&name=medium" },
-        ])
-
-        setMarketplaceItems([
-            { item_name: "Prismatic #225", item_image: "https://pbs.twimg.com/media/FHuIgJVX0AIDKt9?format=jpg&name=medium" },
-            { item_name: "Prismatic #661", item_image: "https://pbs.twimg.com/media/FHuIJR4XEAQtT_-?format=jpg&name=medium" },
-            { item_name: "Prismatic #919", item_image: "https://pbs.twimg.com/media/FHuIbbNXIAMh4Dy?format=jpg&name=medium" },
-        ])
     }, [])
 
     const onLogout = () => {
@@ -56,7 +35,8 @@ function Router() {
     const authPages = [
         <Route path="/profile" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><Profile credentials={credentials} userAuctionItems={userAuctionItems} userMarketplaceItems={userMarketplaceItems} setCredentials={setCredentials} /></div>} />,
         <Route path="/auctions" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><Auctions auctionItems={auctionItems} /></div>} />,
-        <Route path="/marketplace" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><Marketplace marketplaceItems={marketplaceItems} /></div>} />
+        <Route path="/marketplace" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><Marketplace marketplaceItems={marketplaceItems} /></div>} />,
+        <Route path="/marketplace-sell" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><SellMarketplace /></div>} />,
     ]
 
 
