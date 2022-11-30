@@ -8,7 +8,7 @@ import Auctions from './pages/Auctions';
 import Marketplace from './pages/Marketplace';
 import SellMarketplace from './pages/SellMarketplace';
 import Signup from "./pages/Signup";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import NavigationBar from "./components/NavigationBar";
 import Login from "./pages/Login";
 
@@ -24,19 +24,15 @@ function Router() {
     const [auctionItems, setAuctionItems] = useState(null);
     const [marketplaceItems, setMarketplaceItems] = useState(null);
 
-    // ======================== Replace this with actual call to server to set credentials and user data
-    useEffect(() => {
-    }, [])
-
     const onLogout = () => {
         setCredentials(null);
     }
 
     const authPages = [
-        <Route path="/profile" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><Profile credentials={credentials} userAuctionItems={userAuctionItems} userMarketplaceItems={userMarketplaceItems} setCredentials={setCredentials} /></div>} />,
-        <Route path="/auctions" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><Auctions auctionItems={auctionItems} /></div>} />,
-        <Route path="/marketplace" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><Marketplace marketplaceItems={marketplaceItems} /></div>} />,
-        <Route path="/marketplace-sell" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} /><SellMarketplace /></div>} />,
+        <Route path="/profile" element={<div><AuthNavBar credentials={credentials} setCredentials={setCredentials} onLogout={onLogout} /><Profile credentials={credentials} userAuctionItems={userAuctionItems} userMarketplaceItems={userMarketplaceItems} setCredentials={setCredentials} /></div>} />,
+        <Route path="/auctions" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><Auctions auctionItems={auctionItems} /></div>} />,
+        <Route path="/marketplace" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><Marketplace marketplaceItems={marketplaceItems} /></div>} />,
+        <Route path="/marketplace-sell" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><SellMarketplace /></div>} />,
     ]
 
 

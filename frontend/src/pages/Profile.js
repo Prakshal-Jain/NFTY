@@ -3,8 +3,6 @@ import userProfilePhoto from '../assets/1.png';
 import { Row, Col } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image'
 import ItemCard from "../components/ItemCard";
-import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
 
 function DividerSection(props) {
     return (
@@ -18,33 +16,7 @@ function DividerSection(props) {
 }
 
 function Profile(props) {
-    const [redirect, setRedirect] = useState(false);
-
-    useEffect(() => {
-        (async () => {
-            fetch('/api/users/profile')
-                .then(async (res) => {
-                    try {
-                        const data = await res.json();
-                        if (res.status === 200) {
-                            props.setCredentials(data);
-                        }
-                        else {
-                            setRedirect(true);
-                        }
-                    }
-                    catch (err) {
-                        setRedirect(true);
-                    }
-                })
-        })();
-    }, [])
-
-
-    if (redirect) {
-        return <Navigate to={"/login"} />;
-    }
-    else if (props.credentials === null || props.credentials === undefined) {
+    if (props.credentials === null || props.credentials === undefined) {
         return null;
     }
     else {

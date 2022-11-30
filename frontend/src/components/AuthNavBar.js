@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -9,29 +9,50 @@ function AuthNavBar(props) {
     const [redirect, setRedirect] = useState(false);
     const [error, setError] = useState(null)
 
+    useEffect(() => {
+        (async () => {
+            fetch('/api/users/profile')
+                .then(async (res) => {
+                    try {
+                        const data = await res.json();
+                        if (res.status === 200) {
+                            props.setCredentials(data);
+                        }
+                        else {
+                            setRedirect(true);
+                        }
+                    }
+                    catch (err) {
+                        setRedirect(true);
+                    }
+                })
+        })();
+    }, [])
+
+
     const onLogOut = async () => {
         fetch('/api/users/logout')
-        .then(async (res) => {
-            try {
-                const data = await res.json();
-                if (res.status === 200) {
-                    setRedirect(true);
+            .then(async (res) => {
+                try {
+                    const data = await res.json();
+                    if (res.status === 200) {
+                        setRedirect(true);
+                    }
+                    else {
+                        setError(data);
+                        setRedirect(false);
+                    }
                 }
-                else {
-                    setError(data);
+                catch (err) {
+                    setError("An error occured.");
                     setRedirect(false);
                 }
-            }
-            catch (err) {
-                setError("An error occured.");
-                setRedirect(false);
-            }
-        })
+            })
         props.onLogout();
         setRedirect(true);
     }
 
-    if(redirect){
+    if (redirect) {
         return <Navigate to={"/login"} />
     }
 
