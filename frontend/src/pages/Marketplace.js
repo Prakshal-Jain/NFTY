@@ -49,15 +49,7 @@ export default function Marketplace(props) {
                         </Link>
                     </Col>
                 </Row>
-                <ItemCard showModal={showModal} list={[
-                    {
-                        "_id": "6387e4f88ad8819c5bd6018c",
-                        "item_name": "Heyy",
-                        "item_image": "https://tesla-cdn.thron.com/delivery/public/image/tesla/3863f3e5-546a-4b22-bcbc-1f8ee0479744/bvlatuR/std/1200x628/MX-Social",
-                        "description": "I want money!",
-                        "price": 2000
-                    }
-                ]} />
+                <ItemCard showModal={showModal} list={marketplaceItems} />
 
 
                 <Modal show={modalDetails !== null} onHide={() => setShowModal(null)}>
