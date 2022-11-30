@@ -34,7 +34,7 @@ router.post('/signup', (req, res) => {
                             password: hashedPassword,
                             purchased_items: [],
                             sold_items: [],
-                            balance: 0,
+                            balance: 5000,
                             shopping_cart: [],
                             auth_token: uniqueValidToken
                         })

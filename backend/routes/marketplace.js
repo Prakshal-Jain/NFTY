@@ -1,9 +1,10 @@
-var express = require("express");
+const express = require("express");
 var router = express.Router();
-
-var multer  = require('multer');
-var upload = multer({ dest: 'upload/'});
-var type = upload.single('item_image');
+const userModel = require("../models/user_object");
+const { objectModel } = require("../models/item_object");
+const multer = require('multer');
+const upload = multer({ dest: 'upload/' });
+const type = upload.single('item_image');
 
 // /selling
 router.get('/', (req, res) => {
@@ -12,9 +13,44 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', type, (req, res) => {
-    console.log(req.file);
-    console.log(req.body);
-    res.sendStatus(200);
+    userModel.find({ auth_token: req.cookies.auth_token }, async (err, token_list) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            if (token_list.length === 0) {
+                res.status(403);
+                res.json({ message: "User profile Not Found" });
+            } else {
+                if (req.body.item_name !== null && req.body.item_image !== null && req.body.description !== null && req.body.price !== null) {
+                    const user = token_list[0];
+                    const item_data = {
+                        item_name: req.body.item_name,
+                        description: req.body.description,
+                        price: req.body.price,
+                        owner: user,
+                    }
+
+                    const newItem = new objectModel(item_data)
+
+                    newItem.save(function (err, item) {
+                        if (err) {
+                            console.log(err)
+                        }
+                        else {
+                            console.log(item);
+                            res.status(200);
+                            res.json({ message: "Item created successfully." });
+                        }
+                    });
+                }
+                else {
+                    res.status(403);
+                    res.json({ message: "Please fill all requred fields." });
+                }
+            }
+        }
+    });
 });
 
 // /selling/selling-details

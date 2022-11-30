@@ -13,7 +13,7 @@ export default function (props) {
 
     const handleSubmit = async () => {
         const file = new FormData()
-        file.append('item_image', item_image);
+        file.append('item_image', item_image, item_image.name);
         file.append('item_name', item_name);
         file.append('description', description);
         file.append('price', price);
