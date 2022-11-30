@@ -40,4 +40,15 @@ async function validatePassword(password, encrypted_correct_password) {
     return isValid;
 }
 
-module.exports = { validateEmail, generateRandomString, generateUniqueValidToken, hashPassword, validatePassword }
+async function authenticateUser(auth_token) {
+    // Get the token cookie and check if it is exist and valid. If true, return data related to the corresponding user.
+    const token_list = await userModel.find({ auth_token: auth_token })
+    if (token_list.length === 0) {
+        return null;
+    } else {
+        const user = token_list[0];
+        return user;
+    }
+}
+
+module.exports = { validateEmail, generateRandomString, generateUniqueValidToken, hashPassword, validatePassword, authenticateUser }

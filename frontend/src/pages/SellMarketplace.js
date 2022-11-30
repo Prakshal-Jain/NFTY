@@ -18,7 +18,7 @@ export default function (props) {
         file.append('description', description);
         file.append('price', price);
 
-        fetch('/api/marketplace', {
+        fetch('/api/marketplace/?item_type=marketplace', {
             method: 'POST',
             credentials: 'same-origin',
             body: file,

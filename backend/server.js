@@ -34,7 +34,9 @@ app.use('/api/purchase', purchase);
 app.use('/api/marketplace', marketplace);
 
 // route for homepage 
-app.use(express.static(path.join(__dirname, "..", "frontend", "build")))
+app.use(express.static(path.join(__dirname, "..", "frontend", "build")));
+app.use(express.static(path.join(__dirname, "uploads")));
+console.log(path.join(__dirname, "uploads"))
 
 
 // ================ Note by Prakshal: Make all the API calls above this line. Any call below this will be ignored
