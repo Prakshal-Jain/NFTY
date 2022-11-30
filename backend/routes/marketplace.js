@@ -38,7 +38,6 @@ router.post('/', type, (req, res) => {
                             console.log(err)
                         }
                         else {
-                            console.log(item);
                             res.status(200);
                             res.json({ message: "Item created successfully." });
                         }
