@@ -14,4 +14,4 @@ router.get('/selling-details', (req, res) => {
 }); 
 
 
-module.exports = router; 
+module.exports = router;

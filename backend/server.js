@@ -9,7 +9,7 @@ var products = require('./routes/products');
 var users = require('./routes/users'); 
 var auction = require('./routes/auction'); 
 var purchase = require('./routes/purchase'); 
-var selling = require('./routes/selling'); 
+var marketplace = require('./routes/marketplace'); 
 
 
 const app = express();
@@ -30,8 +30,8 @@ database.once('open', () => console.log("---Database Connected---"))
 app.use('/api/products', products); 
 app.use('/api/users', users); 
 app.use('/api/auction', auction); 
-app.use('/api/purchase', purchase); 
-app.use('/api/selling', selling)
+app.use('/api/purchase', purchase);
+app.use('/api/marketplace', marketplace);
 
 // route for homepage 
 app.use(express.static(path.join(__dirname, "..", "frontend", "build")))
@@ -39,8 +39,8 @@ app.use(express.static(path.join(__dirname, "..", "frontend", "build")))
 
 // ================ Note by Prakshal: Make all the API calls above this line. Any call below this will be ignored
 app.get('/*', async (req, res) => {
-    res.status(200)
-    res.sendFile(path.join(__dirname, "..", "frontend", "build", "index.html"))
+    res.status(200);
+    res.sendFile(path.join(__dirname, "..", "frontend", "build", "index.html"));
 });
 
 app.listen(PORT, (error) => {
