@@ -1,7 +1,6 @@
 const express = require('express');
 require('dotenv').config()
 const bodyParser = require('body-parser');
-let multer = require('multer');
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose');
@@ -17,8 +16,6 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb', parameterLimit: 50000 }));
 app.use(bodyParser.json({ limit: '50mb' }));
 
-let upload = multer();
-app.use(upload.array());
 app.use(cookieParser())
 
 const PORT = 8000;
