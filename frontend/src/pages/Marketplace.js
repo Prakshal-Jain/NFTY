@@ -49,7 +49,15 @@ export default function Marketplace(props) {
                         </Link>
                     </Col>
                 </Row>
-                <ItemCard showModal={showModal} list={marketplaceItems} />
+                <ItemCard showModal={showModal} list={[
+                    {
+                        "_id": "6387e4f88ad8819c5bd6018c",
+                        "item_name": "Heyy",
+                        "item_image": "https://tesla-cdn.thron.com/delivery/public/image/tesla/3863f3e5-546a-4b22-bcbc-1f8ee0479744/bvlatuR/std/1200x628/MX-Social",
+                        "description": "I want money!",
+                        "price": 2000
+                    }
+                ]} />
 
 
                 <Modal show={modalDetails !== null} onHide={() => setShowModal(null)}>
@@ -58,11 +66,11 @@ export default function Marketplace(props) {
                     </Modal.Header>
                     <h3 className="m-2" style={{ textAlign: 'center' }}>{modalDetails?.item_name}</h3>
                     <Row>
-                        <Col style={{ alignItems: 'center' }}>
-                            <Image src={modalDetails?.item_image} className="m-2" style={{ maxHeight: 200, width: '100%', borderRadius: '0.5em', objectFit: 'cover' }} />
+                        <Col style={{alignItems: 'center', textAlign: 'center'}}>
+                            <Image src={modalDetails?.item_image} style={{ width: '80%', borderRadius: '0.5em', objectFit: 'cover', marginTop: 2 }} />
                         </Col>
                     </Row>
-                    <Modal.Body>{modalDetails?.description}</Modal.Body>
+                    <Modal.Body style={{textAlign: 'center'}}>{modalDetails?.description}</Modal.Body>
                     <Modal.Footer>
                         <Button variant="success" onClick={() => setShowModal(null)}>
                             Buy this NFT

@@ -1,10 +1,9 @@
 .item-card-container {
     color: white;
     margin: 1em;
-    background-image: linear-gradient(to right top, #40004b, #330d4e, #251550, #151a4f, #001d4d);
+    background: #28282B;
     border-radius: 0.6em;
     padding: 0.5em;
-    border: 0.1em solid #28282b;
     text-align: center;
     word-wrap: break-word;
 }
