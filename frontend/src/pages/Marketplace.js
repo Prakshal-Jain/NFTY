@@ -17,6 +17,7 @@ export default function Marketplace(props) {
     const showModal = (item) => {
         setSuccessBuy(false);
         setShowModal(item);
+        setModalError(null);
     }
 
     useEffect(() => {
@@ -85,7 +86,7 @@ export default function Marketplace(props) {
                 )}
 
 
-                <Modal show={modalDetails !== null} onHide={() => { setShowModal(null); setSuccessBuy(false) }}>
+                <Modal show={modalDetails !== null} onHide={() => { setShowModal(null); setSuccessBuy(false); setModalError(null); }}>
                     <Modal.Header closeButton>
                         <Modal.Title>Details</Modal.Title>
                     </Modal.Header>
@@ -98,7 +99,7 @@ export default function Marketplace(props) {
                             </Row>
                             <Row>
                                 <Col style={{ textAlign: 'center' }} className="mt-2 mb-2">
-                                    <Button variant="dark" onClick={() => { setShowModal(null); setSuccessBuy(false) }}>
+                                    <Button variant="dark" onClick={() => { setShowModal(null); setSuccessBuy(false); setModalError(false); }}>
                                         Close
                                     </Button>
                                 </Col>

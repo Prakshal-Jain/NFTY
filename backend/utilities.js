@@ -51,4 +51,14 @@ async function authenticateUser(auth_token) {
     }
 }
 
-module.exports = { validateEmail, generateRandomString, generateUniqueValidToken, hashPassword, validatePassword, authenticateUser }
+// Filter out the owner data from item list
+function filterItemList(items) {
+    return items.map(item => {
+        item["_id"] = undefined;
+        item["__v"] = undefined;
+        item["owner"] = undefined;
+        return item;
+    });
+}
+
+module.exports = { validateEmail, generateRandomString, generateUniqueValidToken, hashPassword, validatePassword, authenticateUser, filterItemList }

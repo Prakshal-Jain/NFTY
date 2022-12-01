@@ -126,10 +126,10 @@ router.get('/profile', (req, res) => {
                 const user = token_list[0];
                 const dict = {
                     email: user.email,
-                    purchased_items: user.purchased_items,
-                    sold_items: user.sold_items,
+                    purchased_items: utilities.filterItemList(user.purchased_items),
+                    sold_items: utilities.filterItemList(user.sold_items),
                     balance: user.balance,
-                    shopping_cart: user.shopping_cart
+                    shopping_cart: utilities.filterItemList(user.shopping_cart)
                 };
                 res.status(200);
                 res.json(dict);
