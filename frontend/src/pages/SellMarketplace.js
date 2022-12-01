@@ -15,10 +15,11 @@ export default function (props) {
         const file = new FormData()
         file.append('item_image', item_image, item_image.name);
         file.append('item_name', item_name);
+        file.append('item_type', "marketplace");
         file.append('description', description);
         file.append('price', price);
 
-        fetch('/api/items/?item_type=marketplace', {
+        fetch('/api/items', {
             method: 'POST',
             credentials: 'same-origin',
             body: file,
