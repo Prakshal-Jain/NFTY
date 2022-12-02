@@ -32,11 +32,6 @@ function Profile(props) {
                         <h3 style={{ color: 'white' }}>Your Sold Items</h3>
                         <ItemCard list={props.credentials.sold_items} />
                     </DividerSection>
-
-                    <DividerSection>
-                        <h3 style={{ color: 'white' }}>Your Shopping Card</h3>
-                        <ItemCard list={props.credentials.shopping_cart} />
-                    </DividerSection>
                 </Col>
 
 

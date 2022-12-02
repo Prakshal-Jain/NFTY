@@ -65,6 +65,7 @@ function AuthNavBar(props) {
                     <Nav className="me-auto">
                         <Nav.Link href="/auctions">Auctions</Nav.Link>
                         <Nav.Link href="/marketplace">Buy &amp; Sell</Nav.Link>
+                        <Nav.Link href="/shopping-cart">Shopping Cart</Nav.Link>
                     </Nav>
                     {props.credentials !== null && (
                         <Nav>

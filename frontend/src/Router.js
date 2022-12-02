@@ -8,6 +8,7 @@ import Auctions from './pages/Auctions';
 import Marketplace from './pages/Marketplace';
 import SellMarketplace from './pages/SellMarketplace';
 import Signup from "./pages/Signup";
+import ShoppingCart from "./pages/ShoppingCart";
 import { useState } from 'react';
 import NavigationBar from "./components/NavigationBar";
 import Login from "./pages/Login";
@@ -32,6 +33,7 @@ function Router() {
         <Route path="/auctions" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><Auctions /></div>} />,
         <Route path="/marketplace" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><Marketplace /></div>} />,
         <Route path="/marketplace-sell" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><SellMarketplace /></div>} />,
+        <Route path="/shopping-cart" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><ShoppingCart credentials={credentials} /></div>} />,
     ]
 
 

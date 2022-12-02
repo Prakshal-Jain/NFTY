@@ -3,7 +3,7 @@ import { Row, Col, Button, Modal, Image, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ItemCard from "../components/ItemCard";
 import { useNavigate } from "react-router-dom";
-import successImg from "../assets/successful-buy.gif"
+
 
 export default function Marketplace(props) {
     const [marketplaceItems, setMarketplaceItems] = useState(null);
@@ -44,7 +44,7 @@ export default function Marketplace(props) {
     }, [])
 
     const handleBuy = async () => {
-        const d = await fetch('/api/items/buy-marketplace-item', {
+        const d = await fetch('/api/items/add-shoppingcart-item', {
             method: 'POST',
             credentials: 'same-origin',
             headers: {
@@ -91,10 +91,12 @@ export default function Marketplace(props) {
                         <Modal.Title>Details</Modal.Title>
                     </Modal.Header>
                     {successBuy ? (
-                        <div>
+                        <div className="p-2">
                             <Row>
                                 <Col style={{ alignItems: 'center', textAlign: 'center' }} className="mt-2">
-                                    <Image src={successImg} style={{ width: '80%', borderRadius: '0.5em', objectFit: 'cover', marginTop: 2 }} />
+                                    <Alert variant="success">
+                                        Item successfully added to shopping cart.
+                                    </Alert>
                                 </Col>
                             </Row>
                             <Row>
@@ -132,7 +134,7 @@ export default function Marketplace(props) {
 
                                 <Modal.Footer>
                                     <Button variant="success" onClick={handleBuy}>
-                                        Buy this NFT
+                                        Add to shopping card
                                     </Button>
                                 </Modal.Footer>
                             </div>
