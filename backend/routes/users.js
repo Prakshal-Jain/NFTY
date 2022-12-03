@@ -54,7 +54,7 @@ router.post('/signup', (req, res) => {
         }
         else {
             res.status(403)
-            res.json({ message: "Please enter a valid Username and Password." });
+            res.json({ message: "Please enter a valid Email and Password." });
         }
     }
     else {
@@ -95,14 +95,14 @@ router.post('/login', (req, res) => {
                     }
                     else {
                         res.status(403);
-                        res.json({ message: "Please enter a valid Username and Password." });
+                        res.json({ message: "Please enter a valid Email and Password." });
                     }
                 }
             })
         }
         else {
             res.status(403)
-            res.json({ message: "Please enter a valid Username and Password." });
+            res.json({ message: "Please enter a valid Email and Password." });
         }
     }
     else {

@@ -14,6 +14,8 @@ const transactionSchema = new mongoose.Schema({
   seller: userModel
 });
 
+const transactionModel = mongoose.model("Transaction", transactionSchema);
+
 // schema for item infos, each item saved on our website will go onto this schema 
 const objectSchema = new mongoose.Schema({
   item_name: String,
@@ -22,7 +24,7 @@ const objectSchema = new mongoose.Schema({
   auction_detail: [auctionSchema],
   price: Number,
   owner: userModel,
-  transaction: transactionSchema,
+  transaction: [transactionSchema],
   item_type: {
     type: String,
     enum: ['marketplace', 'auction', 'none'],
@@ -31,4 +33,4 @@ const objectSchema = new mongoose.Schema({
 });
 
 const objectModel = mongoose.model("Object", objectSchema);
-module.exports = { objectModel, objectSchema };
+module.exports = { objectModel, objectSchema, transactionModel };

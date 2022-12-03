@@ -56,7 +56,7 @@ function filterItemList(items) {
     return items.map(item => {
         item["_id"] = undefined;
         item["__v"] = undefined;
-        item["owner"] = undefined;
+        item["owner"] = item["owner"].email;
         return item;
     });
 }

@@ -3,7 +3,7 @@ const router = express.Router();
 const userModel = require("../models/user_object");
 const path = require('path');
 var fs = require('fs');
-const { objectModel } = require("../models/item_object");
+const { objectModel, transactionModel } = require("../models/item_object");
 const multer = require('multer');
 const utilities = require('../utilities')
 
@@ -22,13 +22,7 @@ router.get('/all-marketplace-items', async (req, res) => {
             res.status(500).send('An error occurred', err);
         }
         else {
-            const item_list = items.map(item => {
-                item["_id"] = undefined;
-                item["__v"] = undefined;
-                item["owner"] = undefined;
-                item["auction_detail"] = undefined;
-                return item;
-            });
+            const item_list = utilities.filterItemList(items);
             res.status(200);
             res.json(item_list);
         }
@@ -121,7 +115,7 @@ router.post('/', upload.single('item_image'), async (req, res, next) => {
     });
 });
 
-router.post('/buy-marketplace-item', async (req, res) => {
+router.post('/add-shoppingcart-item', async (req, res) => {
     const user = await utilities.authenticateUser(req.cookies.auth_token)
     if (user === null) {
         res.status(401);
@@ -145,7 +139,7 @@ router.post('/buy-marketplace-item', async (req, res) => {
         return
     }
 
-    if (item.owner.balance < item.price) {
+    if (user.balance < item.price) {
         res.status(403);
         res.json({ message: "You do not have the sufficient funds to purchase this item." });
         return
@@ -158,11 +152,53 @@ router.post('/buy-marketplace-item', async (req, res) => {
         res.json({ message: "Item already in your shopping cart." });
         return
     }
-    
+
     user.shopping_cart.push(item);
     user.save()
 
-    // TO BE MPLEMENTED WHEN PERSON BUY ITEMS FROM SHOPPING CART
+    res.status(200);
+    res.send({ message: "Item added to shopping cart successfully!" });
+});
+
+router.post('/delete-from-shopping-cart', async (req, res) => {
+    const user = await utilities.authenticateUser(req.cookies.auth_token);
+    if (user === null) {
+        res.status(401);
+        res.json({ message: "Unauthorized user." });
+        return
+    }
+
+    // Check if the item exist
+    const items = await objectModel.find({ item_type: req.body.item_type, item_name: req.body.item_name });
+    if (items.length === 0) {
+        res.status(403);
+        res.json({ message: "Item does not exist." });
+        return
+    }
+
+    const item = items[0];
+    if (item.owner.auth_token === user.auth_token) {
+        res.status(403);
+        res.json({ message: "You are the owner of the item. Deleting your own item from shopping cart is not allowed." });
+        return
+    }
+
+    const existingIdx = user.shopping_cart.findIndex(x => (x.item_name === item.item_name && x.item_type === item.item_type));
+    if (existingIdx === -1) {
+        res.status(403);
+        res.json({ message: "Item not in your shopping cart." });
+        return
+    }
+
+    user.shopping_cart.splice(existingIdx, 1);
+    user.save()
+
+    res.status(200);
+    res.send({ message: "Item deleted from shopping cart successfully!" });
+})
+
+router.post('/buy-marketplace-item', async (req, res) => {
+    // TO BE IMPLEMENTED WHEN PERSON BUY ITEMS FROM SHOPPING CART
     // Add price to seller
     // Subtract price from buyer
     // Change owner
@@ -171,13 +207,84 @@ router.post('/buy-marketplace-item', async (req, res) => {
 
     // NOTE: if item is in shopping cart, and other user already bought it, delete from all other users.
 
+    const user = await utilities.authenticateUser(req.cookies.auth_token)
+    if (user === null) {
+        res.status(401);
+        res.json({ message: "Unauthorized user." });
+        return
+    }
+
+    // Check if the item exist
+    const items = await objectModel.find({ item_type: req.body.item_type, item_name: req.body.item_name });
+    if (items.length === 0) {
+        res.status(403);
+        res.json({ message: "Item does not exist." });
+        return
+    }
+
+    const item = items[0];
+    // Check if user is not the same as the owner of the object
+    if (item.owner.auth_token === user.auth_token) {
+        res.status(403);
+        res.json({ message: "You are the owner of the item. You cannot buy your own item." });
+        return
+    }
+
+    if (user.balance < item.price) {
+        res.status(403);
+        res.json({ message: "You do not have the sufficient funds to purchase this item." });
+        return
+    }
+
+    const existingIdx = user.shopping_cart.findIndex(x => (x.item_name === item.item_name && x.item_type === item.item_type));
+    if (existingIdx === -1) {
+        res.status(403);
+        res.json({ message: "Item not in your shopping cart." });
+        return
+    }
+
+    const prevItemOwners = await userModel.find({ email: item.owner.email });
+    if (prevItemOwners.length === 0) {
+        res.status(403);
+        res.json({ message: "Previous owner not found." });
+        return
+    }
+
+    const prevItemOwner = prevItemOwners[0];
+
+    // Set item type to none
+    const transaction = new transactionModel({
+        time: Date.now(),
+        price: item.price,
+        buyer: user,
+        seller: prevItemOwner
+    })
+
+    const t = await transaction.save();
+
+    // Update the item (DO NOT SAVE UNTIL THE END TO AVOID CYCLIC DEP. ERROR)
+    await objectModel.updateOne({ item_name: item.item_name, item_type: item.item_type }, {
+        owner: user,
+        transaction: [...item.transaction, t],
+        item_type: 'none'
+    })
+
+    const i = await objectModel.findOne({ item_name: item.item_name, item_type: 'none' });
+
+    // Update the buyer
+    user.shopping_cart.splice(existingIdx, 1);
+    user.balance -= i.price;
+    user.purchased_items.push(i);
+    const u = await user.save();
+
+    // Update the seller
+    prevItemOwner.sold_items = (prevItemOwner.sold_items) ? prevItemOwner.sold_items : [];
+    prevItemOwner.balance += i.price;
+    prevItemOwner.sold_items.push(i);
+    const p = await prevItemOwner.save();
+
     res.status(200);
     res.send({ message: "Item bought successfully!" });
-});
-
-router.get('/selling-details', (req, res) => {
-    res.status(200);
-    res.send("GET request for selling details");
 });
 
 

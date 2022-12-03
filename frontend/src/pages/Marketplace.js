@@ -122,6 +122,12 @@ export default function Marketplace(props) {
                                         <Modal.Body style={{ textAlign: 'center' }}>{modalDetails?.description}</Modal.Body>
                                     </Col>
                                 </Row>
+                                <Row>
+                                    <Col>
+                                        <Modal.Body>Owner: {modalDetails?.owner}</Modal.Body>
+                                        <Modal.Body>Price (ETH): {modalDetails?.price}</Modal.Body>
+                                    </Col>
+                                </Row>
                                 {modalError && (
                                     <Row>
                                         <Col>
