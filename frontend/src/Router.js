@@ -12,28 +12,23 @@ import ShoppingCart from "./pages/ShoppingCart";
 import { useState } from 'react';
 import NavigationBar from "./components/NavigationBar";
 import Login from "./pages/Login";
+import CreateAuctionItem from "./pages/CreateAuctionItem";
 
 function Router() {
 
     const [credentials, setCredentials] = useState(null);
-
-    // Items specific to the logged in user
-    const [userAuctionItems, setUserAuctionItems] = useState(null);
-    const [userMarketplaceItems, setUserMarketplaceItems] = useState(null);
-
-    // All auction and marketplace items in the database
-    const [auctionItems, setAuctionItems] = useState(null);
 
     const onLogout = () => {
         setCredentials(null);
     }
 
     const authPages = [
-        <Route path="/profile" element={<div><AuthNavBar credentials={credentials} setCredentials={setCredentials} onLogout={onLogout} /><Profile credentials={credentials} userAuctionItems={userAuctionItems} userMarketplaceItems={userMarketplaceItems} setCredentials={setCredentials} /></div>} />,
+        <Route path="/profile" element={<div><AuthNavBar credentials={credentials} setCredentials={setCredentials} onLogout={onLogout} /><Profile credentials={credentials} setCredentials={setCredentials} /></div>} />,
         <Route path="/auctions" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><Auctions /></div>} />,
         <Route path="/marketplace" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><Marketplace /></div>} />,
         <Route path="/marketplace-sell" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><SellMarketplace /></div>} />,
         <Route path="/shopping-cart" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><ShoppingCart credentials={credentials} /></div>} />,
+        <Route path="/create-auction-item" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><CreateAuctionItem /></div>} />,
     ]
 
 
