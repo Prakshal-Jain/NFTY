@@ -57,6 +57,15 @@ function filterItemList(items) {
         item["_id"] = undefined;
         item["__v"] = undefined;
         item["owner"] = item["owner"].email;
+
+        item["transaction"] = item["transaction"].map((x, index) => {
+            x["_id"] = undefined;
+            x["__v"] = undefined;
+            x["seller"] = x["seller"].email;
+            x["buyer"] = x["buyer"].email;
+            return x;
+        });
+
         return item;
     });
 }

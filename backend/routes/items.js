@@ -207,7 +207,7 @@ router.post('/buy-marketplace-item', async (req, res) => {
 
     // NOTE: if item is in shopping cart, and other user already bought it, delete from all other users.
 
-    const user = await utilities.authenticateUser(req.cookies.auth_token)
+    const user = await utilities.authenticateUser(req.cookies.auth_token);
     if (user === null) {
         res.status(401);
         res.json({ message: "Unauthorized user." });
@@ -285,6 +285,45 @@ router.post('/buy-marketplace-item', async (req, res) => {
 
     res.status(200);
     res.send({ message: "Item bought successfully!" });
+});
+
+
+router.put('/resell-marketplace-item', async (req, res) => {
+    const user = await utilities.authenticateUser(req.cookies.auth_token);
+
+    if (user === null) {
+        res.status(401);
+        res.json({ message: "Unauthorized user." });
+        return
+    }
+
+    const items = await objectModel.find({ item_type: req.body.item_type, item_name: req.body.item_name });
+    if (items.length === 0) {
+        res.status(403);
+        res.json({ message: "Item does not exist." });
+        return
+    }
+
+    const item = items[0];
+    if (item.owner.email !== user.email) {
+        res.status(403);
+        res.json({ message: "You are not the owner of the item." });
+        return
+    }
+
+    if (req.body.price === undefined || req.body.price === null || isNaN(Number(req.body.price))) {
+        res.status(403);
+        res.json({ message: "Please set a valid number as price." });
+        return
+    }
+
+    await objectModel.updateOne({ item_type: req.body.item_type, item_name: req.body.item_name }, {
+        price: Number(req.body.price),
+        item_type: 'marketplace'
+    })
+
+    res.status(200);
+    res.send({ message: "Item reposted to marketplace successfully!" });
 });
 
 
