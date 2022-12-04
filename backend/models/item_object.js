@@ -23,6 +23,7 @@ const objectSchema = new mongoose.Schema({
   description: String,
   auction_detail: [auctionSchema],
   price: Number,
+  expiration_time: String,
   owner: userModel,
   transaction: [transactionSchema],
   item_type: {

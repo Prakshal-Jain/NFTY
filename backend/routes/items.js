@@ -2,10 +2,9 @@ const express = require("express");
 const router = express.Router();
 const userModel = require("../models/user_object");
 const path = require('path');
-var fs = require('fs');
 const { objectModel, transactionModel } = require("../models/item_object");
 const multer = require('multer');
-const utilities = require('../utilities')
+const utilities = require('../utilities');
 
 
 router.get('/all-marketplace-items', async (req, res) => {
