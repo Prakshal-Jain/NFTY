@@ -36,6 +36,7 @@ export default function Auctions(props) {
     }, [])
 
     const handleJoinAuction = () => {
+        
         return;
     }
 

@@ -9,14 +9,20 @@ import Marketplace from './pages/Marketplace';
 import SellMarketplace from './pages/SellMarketplace';
 import Signup from "./pages/Signup";
 import ShoppingCart from "./pages/ShoppingCart";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NavigationBar from "./components/NavigationBar";
 import Login from "./pages/Login";
 import CreateAuctionItem from "./pages/CreateAuctionItem";
+import { io } from "socket.io-client";
 
 function Router() {
 
     const [credentials, setCredentials] = useState(null);
+    
+    useEffect(() => {
+        const socket = io();
+        socket.emit('auction', "NAHHHHH");
+    }, [])
 
     const onLogout = () => {
         setCredentials(null);
