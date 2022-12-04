@@ -9,20 +9,15 @@ import Marketplace from './pages/Marketplace';
 import SellMarketplace from './pages/SellMarketplace';
 import Signup from "./pages/Signup";
 import ShoppingCart from "./pages/ShoppingCart";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import NavigationBar from "./components/NavigationBar";
 import Login from "./pages/Login";
 import CreateAuctionItem from "./pages/CreateAuctionItem";
-import { io } from "socket.io-client";
+import LiveAuction from "./pages/LiveAuction";
 
 function Router() {
 
     const [credentials, setCredentials] = useState(null);
-    
-    useEffect(() => {
-        const socket = io();
-        socket.emit('auction', "NAHHHHH");
-    }, [])
 
     const onLogout = () => {
         setCredentials(null);
@@ -35,6 +30,7 @@ function Router() {
         <Route path="/marketplace-sell" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><SellMarketplace /></div>} />,
         <Route path="/shopping-cart" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><ShoppingCart credentials={credentials} /></div>} />,
         <Route path="/create-auction-item" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><CreateAuctionItem /></div>} />,
+        <Route path="/live-auction" element={<div><AuthNavBar credentials={credentials} onLogout={onLogout} setCredentials={setCredentials} /><LiveAuction /></div>} />,
     ]
 
 

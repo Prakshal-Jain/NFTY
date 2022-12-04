@@ -181,7 +181,7 @@ function Profile(props) {
                                             aria-describedby="new-price"
                                             className="w-100"
                                             key="new-price"
-                                            onClick={(event) => setNewPrice(event.target.value)}
+                                            onChange={(event) => setNewPrice(event.target.value)}
                                             type="number"
                                         />
                                         <Button variant="success" onClick={handleResell}>

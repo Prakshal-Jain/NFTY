@@ -35,11 +35,6 @@ export default function Auctions(props) {
         })();
     }, [])
 
-    const handleJoinAuction = () => {
-        
-        return;
-    }
-
     return (
         <Row style={{ padding: '2em', textAlign: "center", color: 'white' }}>
             <Col>
@@ -96,7 +91,7 @@ export default function Auctions(props) {
                     )}
 
                     <Modal.Footer>
-                        <Button variant="success" onClick={handleJoinAuction}>
+                        <Button variant="success" as={Link} to={`/live-auction?item_name=${modalDetails?.item_name}`}>
                             Join Auction
                         </Button>
                     </Modal.Footer>
