@@ -2,13 +2,15 @@ const mongoose = require('mongoose');
 const userModel = require('./user_object')
 
 const auctionSchema = new mongoose.Schema({
-  time: Number,
+  time: String,
   price: Number,
   bidder: userModel
 });
 
+const auctionModel = mongoose.model("Auction", auctionSchema);
+
 const transactionSchema = new mongoose.Schema({
-  time: Number,
+  time: String,
   price: Number,
   buyer: userModel,
   seller: userModel
@@ -34,4 +36,4 @@ const objectSchema = new mongoose.Schema({
 });
 
 const objectModel = mongoose.model("Object", objectSchema);
-module.exports = { objectModel, objectSchema, transactionModel };
+module.exports = { objectModel, objectSchema, transactionModel, auctionModel };

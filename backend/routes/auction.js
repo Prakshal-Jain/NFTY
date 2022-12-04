@@ -1,10 +1,64 @@
 var express = require("express");
 var router = express.Router();
 const utilities = require('../utilities');
-const { objectModel } = require("../models/item_object");
+const { objectModel, auctionModel } = require("../models/item_object");
 const path = require('path');
 const multer = require('multer');
 const userModel = require("../models/user_object");
+const http = require('http');
+
+
+const app = express();
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+
+
+io.on('connect', (socket) => {
+    socket.on("new-bid", async ({ bid_price, item_name }) => {
+        const cookies = utilities.parseCookie(socket.handshake.headers.cookie);
+        const user = await utilities.authenticateUser(cookies.auth_token);
+        if (user === null) {
+            return
+        }
+
+        if (isNaN(Number(bid_price))) {
+            return
+        }
+
+        // Add to database and get auction list
+        const auction = new auctionModel({
+            time: new Date(),
+            price: bid_price,
+            bidder: user.email,
+        })
+
+        const auctionItem = await auction.save();
+
+        const items = await objectModel.find({ item_name });
+        if(items.length === 0){
+            return
+        }
+
+        const item = items[0];
+        if(item.auction_detail.length > 0 && bid_price <= (item.auction_detail[item.auction_detail.length-1]).price){
+            // Current bid price must be greater than the last one
+            return
+        }
+        const auction_list = [...item.auction_detail, auctionItem];
+
+        await objectModel.updateOne({ item_name }, {
+            auction_detail: auction_list
+        })
+
+        io.emit('auction_list', auction_list);
+    })
+});
+
+io.on('disconnect', () => {
+    console.log('user disconnected');
+});
+
 
 
 // using multer to store images 
@@ -46,8 +100,10 @@ router.get('/all-auction-items', async (req, res) => {
         }
         else {
             const item_list = utilities.filterItemList(items);
+            // Filter out the expired items too
+            const non_expired_items = item_list.filter((x) => new Date(x.expiration_time) > new Date())
             res.status(200);
-            res.json(item_list);
+            res.json(non_expired_items);
         }
     });
 });
@@ -84,7 +140,7 @@ router.post('/', upload.single('item_image'), async (req, res, next) => {
                 res.status(403);
                 res.json({ message: "User profile Not Found" });
             } else {
-                if (req.body.item_name !== null && req.body.item_image !== null && req.body.description !== null && req.body.price !== null) {
+                if (req.body.item_name !== null && req.body.item_image !== null && req.body.description !== null && req.body.expiration_time !== null && (new Date(req.body.expiration_time)) > (new Date())) {
                     const user = token_list[0];
                     const item_data = {
                         item_name: req.body.item_name,
@@ -109,7 +165,7 @@ router.post('/', upload.single('item_image'), async (req, res, next) => {
                 }
                 else {
                     res.status(403);
-                    res.json({ message: "Please fill all requred fields." });
+                    res.json({ message: "Please fill all requred fields correctly." });
                 }
             }
         }
@@ -118,6 +174,41 @@ router.post('/', upload.single('item_image'), async (req, res, next) => {
 
 // path = /api/auction/
 
+router.get('/auction-data', async (req, res) => {
+    const user = await utilities.authenticateUser(req.cookies.auth_token)
+    if (user === null) {
+        res.status(401);
+        res.json({ message: "Unauthorized user." });
+        return
+    }
+
+    const item_name = req.query.item_name;
+
+    objectModel.find({ item_name }, (err, i) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('An error occurred', err);
+        }
+        else {
+            const items = utilities.filterItemList(i);
+            if (items.length === 0) {
+                res.status(403);
+                res.json({ message: "Item does not exist." });
+                return
+            }
+            else {
+                const item = items[0];
+                if ((new Date(item.expiration_time)) <= (new Date())) {
+                    res.status(403);
+                    res.json({ message: "Item Expired." });
+                    return
+                }
+                res.status(200);
+                res.json(item);
+            }
+        }
+    })
+})
 
 
-module.exports = router;
+module.exports = { auction: router, server, app };

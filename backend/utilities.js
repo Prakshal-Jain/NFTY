@@ -8,7 +8,7 @@ function validateEmail(email) {
 
 function generateRandomString(n) {
     let randomString = '';
-    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-_=!@#$%^&*()/<>[]';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-_!@#$%^&*()/<>[]';
 
     for (let i = 0; i < n; i++) {
         randomString += characters.charAt(Math.floor(Math.random() * characters.length));
@@ -70,4 +70,12 @@ function filterItemList(items) {
     });
 }
 
-module.exports = { validateEmail, generateRandomString, generateUniqueValidToken, hashPassword, validatePassword, authenticateUser, filterItemList }
+const parseCookie = str =>
+    str.split(';')
+        .map(v => v.split('='))
+        .reduce((acc, v) => {
+            acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim());
+            return acc;
+        }, {});
+
+module.exports = { validateEmail, generateRandomString, generateUniqueValidToken, hashPassword, validatePassword, authenticateUser, filterItemList, parseCookie }

@@ -6,11 +6,9 @@ const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose');
 
 var users = require('./routes/users');
-var auction = require('./routes/auction');
+var {server, auction, app} = require('./routes/auction');
 var items = require('./routes/items');
-const http = require('http');
 
-const app = express();
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb', parameterLimit: 50000 }));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cookieParser());
@@ -34,23 +32,6 @@ app.use(express.static(path.join(__dirname, "..", "frontend", "build")));
 app.use(express.static(path.join(__dirname, "uploads")));
 
 
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
-
-io.on('connect', (socket) => {
-    console.log('a user connected');
-});
-
-io.on("auction", (socket) => {
-    console.log("GOT A REQUEST FOR AUCTION");
-})
-
-io.on('disconnect', () => {
-    console.log('user disconnected');
-});
-
-
 // ================ Note by Prakshal: Make all the API calls above this line. Any call below this will be ignored
 app.get('/*', async (req, res) => {
     res.status(200);
@@ -66,5 +47,4 @@ server.listen(PORT, (error) => {
 
 
 // kill server -> sudo lsof -i :8000 // kill -9 ID 
-
 
