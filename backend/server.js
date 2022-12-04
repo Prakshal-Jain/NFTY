@@ -5,10 +5,8 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose');
 
-var products = require('./routes/products');
 var users = require('./routes/users');
 var auction = require('./routes/auction');
-var purchase = require('./routes/purchase');
 var items = require('./routes/items');
 
 
@@ -27,10 +25,8 @@ database.on('error', (error) => console.error(error))
 database.once('open', () => console.log("---Database Connected---"))
 
 // setting up route 
-app.use('/api/products', products);
 app.use('/api/users', users);
 app.use('/api/auction', auction);
-app.use('/api/purchase', purchase);
 app.use('/api/items', items);
 
 // route for homepage 

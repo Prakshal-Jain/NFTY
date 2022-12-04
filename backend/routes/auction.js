@@ -6,6 +6,21 @@ const path = require('path');
 const multer = require('multer');
 const userModel = require("../models/user_object");
 
+// declaring for socket io 
+const http = require('http');
+const server = http.createServer(router);
+const { Server } = require("socket.io");
+const io = new Server(server);
+
+
+// connection and disconnection 
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  }); 
+});
+
 
 // using multer to store images 
 const storage = multer.diskStorage({
@@ -115,5 +130,9 @@ router.post('/', upload.single('item_image'), async (req, res, next) => {
         }
     });
 });
+
+// path = /api/auction/
+
+
 
 module.exports = router;
