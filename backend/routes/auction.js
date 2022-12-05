@@ -51,7 +51,7 @@ io.on('connect', (socket) => {
             auction_detail: auction_list
         })
 
-        io.emit('auction_list', auction_list);
+        io.emit(`auction_list#${item_name}`, auction_list);
     })
 });
 

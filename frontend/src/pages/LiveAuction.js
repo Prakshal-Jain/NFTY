@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Row, Col, Card, Image, Accordion, Table, Button, Form, Alert } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
@@ -9,6 +9,7 @@ export default function (props) {
     const [auctionDetails, setAuctionDetails] = useState(null);
     const [bidList, setBidList] = useState(null);
     const [newPrice, setNewPrice] = useState(null);
+    const bottomRef = useRef(null);
 
     const navigate = useNavigate();
 
@@ -25,6 +26,7 @@ export default function (props) {
                     if (res.status === 200) {
                         setAuctionDetails(data);
                         setBidList(data.auction_detail);
+                        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
                     }
                     else if (res.status === 401) {
                         navigate('/login');
@@ -38,8 +40,9 @@ export default function (props) {
                 }
             });
 
-        socket.on('auction_list', (bidList) => {
+        socket.on(`auction_list#${item_name}`, (bidList) => {
             setBidList(bidList);
+            bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
         })
 
         // Get live auction details using websockets
@@ -96,7 +99,7 @@ export default function (props) {
                             <Row style={{ justifyContent: "center", alignItems: "center" }}>
                                 <Col style={{ marginTop: '1em', marginBottom: '1em', textAlign: "center" }}>
                                     <div>
-                                        Current Bid Price
+                                        Highest Bid
                                     </div>
                                     <h5>
                                         {bidList.length > 0 ?
@@ -148,9 +151,9 @@ export default function (props) {
                                                 <th>Time</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody style={{ overflowY: 'scroll', maxHeight: '10em', width: '100%' }}>
                                             {bidList !== null && bidList.map((bid, index) => (
-                                                <tr key={`auction_bid_${index}`}>
+                                                <tr key={`auction_bid_${index}`} ref={(index === (bidList.length - 1)) ? bottomRef : null}>
                                                     <td>
                                                         {index + 1}
                                                     </td>
