@@ -17,7 +17,7 @@ export default function (props) {
         file.append('item_name', item_name);
         file.append('item_type', "auction");
         file.append('description', description);
-        file.append('expiration_time', expirationTime);
+        file.append('expiration_time', new Date(expirationTime).toUTCString());
 
         fetch('/api/auction', {
             method: 'POST',
@@ -77,6 +77,8 @@ export default function (props) {
                         key="item-image"
                     />
 
+
+                    <Form.Label htmlFor="expiration-time">Expiration Time</Form.Label>
                     <Form.Control
                         placeholder="Select date and time"
                         type="datetime-local"
@@ -85,6 +87,7 @@ export default function (props) {
                         className="w-100 mb-4"
                         onChange={(event) => setExpirationTime(event.target.value)}
                         key="datetime"
+                        id="expiration-time"
                     />
 
                     <Form.Control

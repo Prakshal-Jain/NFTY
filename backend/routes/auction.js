@@ -26,6 +26,10 @@ io.on('connect', (socket) => {
             return
         }
 
+        if(user.balance < bid_price){
+            return
+        }
+
         // Add to database and get auction list
         const auction = new auctionModel({
             time: new Date(),
