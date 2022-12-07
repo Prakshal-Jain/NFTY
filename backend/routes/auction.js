@@ -19,14 +19,17 @@ io.on('connect', (socket) => {
         const cookies = utilities.parseCookie(socket.handshake.headers.cookie);
         const user = await utilities.authenticateUser(cookies.auth_token);
         if (user === null) {
+            socket.emit(`auction_list#${item_name}`, { status: 403, message: "Unauthorized user." });
             return
         }
 
         if (isNaN(Number(bid_price))) {
+            socket.emit(`auction_list#${item_name}`, { status: 403, message: "Invalid value of Bid Price." });
             return
         }
 
-        if(user.balance < bid_price){
+        if (user.balance < bid_price) {
+            socket.emit(`auction_list#${item_name}`, { status: 403, message: "You do not have the sufficient funds to purchase this item." });
             return
         }
 
@@ -34,28 +37,70 @@ io.on('connect', (socket) => {
         const auction = new auctionModel({
             time: new Date(),
             price: bid_price,
-            bidder: user.email,
+            bidder: user,
         })
 
         const auctionItem = await auction.save();
 
         const items = await objectModel.find({ item_name });
-        if(items.length === 0){
+        if (items.length === 0) {
             return
         }
 
         const item = items[0];
-        if(item.auction_detail.length > 0 && bid_price <= (item.auction_detail[item.auction_detail.length-1]).price){
+
+        if (item.auction_detail.length > 0 && bid_price <= (item.auction_detail[item.auction_detail.length - 1]).price) {
             // Current bid price must be greater than the last one
+            socket.emit(`auction_list#${item_name}`, { status: 403, message: "Your bid must be greater than the current maximum bid." });
             return
         }
+
+        const old_auction_details = item.auction_detail;
         const auction_list = [...item.auction_detail, auctionItem];
 
         await objectModel.updateOne({ item_name }, {
             auction_detail: auction_list
         })
 
-        io.emit(`auction_list#${item_name}`, auction_list);
+        if (new Date(item.expiration_time) <= new Date()) {
+            if (old_auction_details.length === 0) {
+                io.emit(`auction_list#${item_name}`, { status: 403, message: `This auction has been ended.` });
+                return
+            }
+            // Check who have the highest bid. Set them as the owner of the item. Add to purchased item of user and sold items of owner.
+            const new_owner = await userModel.findOne({ email: (old_auction_details[old_auction_details.length - 1]).bidder.email });
+            const old_owner = await userModel.findOne({ email: item.owner.email });
+            console.log("New Owner: \n", new_owner, "\n\n\bOld Owner: \n", old_owner);
+            if (new_owner.email === old_owner.email) {
+                io.emit(`auction_list#${item_name}`, { status: 403, message: `This auction has been ended.` });
+                // Owner didn't changed
+            }
+            else {
+                await objectModel.updateOne({ item_name }, {
+                    owner: new_owner
+                });
+
+                const i = await objectModel.findOne({ item_name: item.item_name, item_type: 'auction' });
+
+                new_owner.purchased_items.push(i);
+                new_owner.balance -= (auction_list[auction_list.length - 1]).price;
+                const u = await new_owner.save();
+
+                old_owner.sold_items.push(i);
+                old_owner.balance += (auction_list[auction_list.length - 1]).price;
+                const p = await old_owner.save();
+                io.emit(`auction_list#${item_name}`, { status: 403, message: `This auction has been ended. Congratulations  🎉 ${new_owner.email} for winning this auction!` });
+            }
+        }
+        else {
+            const new_auc_list = auction_list.map((x, index) => {
+                x["_id"] = undefined;
+                x["__v"] = undefined;
+                x["bidder"] = x["bidder"].email;
+                return x;
+            })
+            io.emit(`auction_list#${item_name}`, { status: 200, message: new_auc_list });
+        }
     })
 });
 
@@ -107,7 +152,7 @@ router.get('/all-auction-items', async (req, res) => {
             // Filter out the expired items too
             const non_expired_items = item_list.filter((x) => new Date(x.expiration_time) > new Date())
             res.status(200);
-            res.json(non_expired_items);
+            res.json(utilities.filterItemList(non_expired_items));
         }
     });
 });
@@ -144,28 +189,35 @@ router.post('/', upload.single('item_image'), async (req, res, next) => {
                 res.status(403);
                 res.json({ message: "User profile Not Found" });
             } else {
-                if (req.body.item_name !== null && req.body.item_image !== null && req.body.description !== null && req.body.expiration_time !== null && (new Date(req.body.expiration_time)) > (new Date())) {
-                    const user = token_list[0];
-                    const item_data = {
-                        item_name: req.body.item_name,
-                        item_image: req.file.filename,
-                        description: req.body.description,
-                        owner: user,
-                        expiration_time: req.body.expiration_time,
-                        item_type: req.body.item_type
+                if (req.body.item_name !== null && req.body.item_image !== null && req.body.description !== null && req.body.expiration_time !== null) {
+                    if ((new Date(req.body.expiration_time)) <= (new Date())) {
+                        res.status(403);
+                        res.json({ message: "Please enter a valid expiration date and time." });
+                        return
                     }
-
-                    const newItem = new objectModel(item_data)
-
-                    newItem.save(function (err, item) {
-                        if (err) {
-                            console.log(err)
+                    else {
+                        const user = token_list[0];
+                        const item_data = {
+                            item_name: req.body.item_name,
+                            item_image: req.file.filename,
+                            description: req.body.description,
+                            owner: user,
+                            expiration_time: req.body.expiration_time,
+                            item_type: req.body.item_type
                         }
-                        else {
-                            res.status(200);
-                            res.json({ message: "Item created successfully." });
-                        }
-                    });
+
+                        const newItem = new objectModel(item_data)
+
+                        newItem.save(function (err, item) {
+                            if (err) {
+                                console.log(err)
+                            }
+                            else {
+                                res.status(200);
+                                res.json({ message: "Item created successfully." });
+                            }
+                        });
+                    }
                 }
                 else {
                     res.status(403);
@@ -204,10 +256,16 @@ router.get('/auction-data', async (req, res) => {
                 const item = items[0];
                 if ((new Date(item.expiration_time)) <= (new Date())) {
                     res.status(403);
-                    res.json({ message: "Item Expired." });
+                    res.json({ message: `This auction has been ended. Congratulations 🎉 ${item.owner} for winning this auction!` });
                     return
                 }
                 res.status(200);
+                item["auction_detail"] = item["auction_detail"].map((x, index) => {
+                    x["_id"] = undefined;
+                    x["__v"] = undefined;
+                    x["bidder"] = x["bidder"].email;
+                    return x;
+                });;
                 res.json(item);
             }
         }

@@ -58,14 +58,24 @@ function filterItemList(items) {
         item["__v"] = undefined;
         item["owner"] = item["owner"].email;
 
-        item["transaction"] = item["transaction"].map((x, index) => {
-            x["_id"] = undefined;
-            x["__v"] = undefined;
-            x["seller"] = x["seller"].email;
-            x["buyer"] = x["buyer"].email;
-            return x;
-        });
+        if (Array.isArray(item["transaction"])) {
+            item["transaction"] = item["transaction"].map((x, index) => {
+                x["_id"] = undefined;
+                x["__v"] = undefined;
+                x["seller"] = x["seller"].email;
+                x["buyer"] = x["buyer"].email;
+                return x;
+            });
+        }
 
+        if (Array.isArray(item["auction_detail"])) {
+            item["auction_detail"] = item["auction_detail"].map((x, index) => {
+                x["_id"] = undefined;
+                x["__v"] = undefined;
+                x["bidder"] = x["bidder"].email;
+                return x;
+            });
+        }
         return item;
     });
 }

@@ -13,7 +13,7 @@ export default function (props) {
 
     const navigate = useNavigate();
 
-    const socket = io.connect({ transports: ['websocket'] });
+    const socket = io({ transports: ['websocket'], upgrade: false });
 
     useEffect(() => {
         let query = new URLSearchParams(window.location.search);
@@ -40,9 +40,16 @@ export default function (props) {
                 }
             });
 
-        socket.on(`auction_list#${item_name}`, (bidList) => {
-            setBidList(bidList);
-            bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        socket.on(`auction_list#${item_name}`, (auction_list) => {
+            console.log(auction_list);
+            if (auction_list.status === 200) {
+                setBidList(auction_list.message);
+                bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }
+            else {
+                console.log("Setting the error");
+                setError(auction_list.message);
+            }
         })
 
         // Get live auction details using websockets
@@ -55,7 +62,15 @@ export default function (props) {
     }, []);
 
     if (auctionDetails === null) {
-        return null;
+        return error && (
+            <Row>
+                <Col style={{ padding: '2em' }}>
+                    <Alert variant="danger">
+                        {error}
+                    </Alert>
+                </Col>
+            </Row>
+        );
     }
 
     return (
