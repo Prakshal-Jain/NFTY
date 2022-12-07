@@ -9,6 +9,9 @@ import img_5 from "../assets/5.png";
 import img_6 from "../assets/6.png";
 import img_7 from "../assets/7.png";
 import img_8 from "../assets/8.png";
+import auction_img from "../assets/auction.png";
+import marketplace_img from "../assets/marketplace.png";
+import { Image } from 'react-bootstrap';
 
 const imgList = [img_1, img_2, img_3, img_4, img_5, img_6, img_7, img_8];
 
@@ -38,6 +41,7 @@ function Homepage() {
           <h5>
             You can put your NFTs up for auction.
           </h5>
+          <Image src={auction_img} style={{ width: '60%', borderRadius: '0.5em', objectFit: 'cover', marginTop: '1.5em', border: '0.1em solid gray' }} />
         </FlexLayout>
       </div>
 
@@ -45,8 +49,9 @@ function Homepage() {
         <FlexLayout direction="vertical" align="center">
           <h2>Buy &amp; Sell</h2>
           <h5>
-            NFTY is your markeyplace to buy or sell NFTs at a fixed price.
+            NFTY is your marketplace to buy or sell NFTs at a fixed price.
           </h5>
+          <Image src={marketplace_img} style={{ width: '60%', borderRadius: '0.5em', objectFit: 'cover', marginTop: '1.5em', border: '0.1em solid gray' }} />
         </FlexLayout>
       </div>
     </div>
