@@ -14,4 +14,5 @@ _The open source report links will go here_
 _We will document our security features here_
 
 ##Live App:
-nftyclub.livr
+[nftyclub.live](http://nftyclub.live/
+)
