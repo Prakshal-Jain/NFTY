@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const utilities = require('../utilities');
-const { objectModel, auctionModel } = require("../models/item_object");
+const { objectModel, auctionModel, chatModel } = require("../models/item_object");
 const path = require('path');
 const multer = require('multer');
 const userModel = require("../models/user_object");
@@ -44,6 +44,7 @@ io.on('connect', (socket) => {
 
         const items = await objectModel.find({ item_name });
         if (items.length === 0) {
+            io.emit(`auction_list#${item_name}#${user.email}`, { status: 403, message: "Unexpected error occured." });
             return
         }
 
@@ -100,6 +101,48 @@ io.on('connect', (socket) => {
             })
             io.emit(`auction_list#${item_name}`, { status: 200, message: new_auc_list });
         }
+    })
+
+    socket.on("chat-message", async ({ item_name, message }) => {
+        const cookies = utilities.parseCookie(socket.handshake.headers.cookie);
+        const user = await utilities.authenticateUser(cookies.auth_token);
+        if (user === null) {
+            io.emit(`chat-message#${item_name}#${user.email}`, { status: 403, message: "Unauthorized user." });
+            return
+        }
+
+        if (message === null || message === undefined || message.length === 0) {
+            io.emit(`chat-message#${item_name}#${user.email}`, { status: 403, message: "Please enter a valid message." });
+            return
+        }
+
+        // Add to database and get auction list
+        const chat = new chatModel({
+            email: user.email,
+            message: message,
+        })
+
+        const chatItem = await chat.save();
+
+        const items = await objectModel.find({ item_name });
+        if (items.length === 0) {
+            io.emit(`chat-message#${item_name}#${user.email}`, { status: 403, message: "Unexpected error occured." });
+            return
+        }
+
+        const item = items[0];
+
+        const chat_list = [...item.chat, chatItem];
+        await objectModel.updateOne({ item_name }, {
+            chat: chat_list
+        });
+
+        const new_chat_list = chat_list.map((x, index) => {
+            x["_id"] = undefined;
+            x["__v"] = undefined;
+            return x;
+        })
+        io.emit(`chat-message#${item_name}`, { status: 200, message: new_chat_list });
     })
 });
 

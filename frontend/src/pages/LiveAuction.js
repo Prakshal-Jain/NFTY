@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Row, Col, Card, Image, Accordion, Table, Button, Form, Alert } from 'react-bootstrap';
+import FlexLayout from '../components/FlexLayout';
+import ChatBubble from "../components/ChatBubble";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 
@@ -9,6 +11,8 @@ export default function (props) {
     const [auctionDetails, setAuctionDetails] = useState(null);
     const [bidList, setBidList] = useState(null);
     const [newPrice, setNewPrice] = useState(null);
+    const [messages, setMessages] = useState(null);
+    const [chatMessage, setChatMessage] = useState(null);
     const bottomRef = useRef(null);
 
     const navigate = useNavigate();
@@ -26,12 +30,13 @@ export default function (props) {
                     if (res.status === 200) {
                         setAuctionDetails(data);
                         setBidList(data.auction_detail);
-
+                        setMessages(data.chat);
+                        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+                        
                         socket.on(`auction_list#${item_name}`, (auction_list) => {
                             if (auction_list.status === 200) {
                                 setBidList(auction_list.message);
                                 setError(null);
-                                bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
                             }
                             else {
                                 setError(auction_list.message);
@@ -42,10 +47,32 @@ export default function (props) {
                             if (auction_list.status === 200) {
                                 setBidList(auction_list.message);
                                 setError(null);
-                                bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
                             }
                             else {
                                 setError(auction_list.message);
+                            }
+                        })
+
+
+                        socket.on(`chat-message#${item_name}#${data?.user_email ?? ''}`, (m) => {
+                            if (m.status === 200) {
+                                setMessages(m.message);
+                                setError(null);
+                                bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+                            }
+                            else {
+                                setError(m.message);
+                            }
+                        })
+
+                        socket.on(`chat-message#${item_name}`, (m) => {
+                            if (m.status === 200) {
+                                setMessages(m.message);
+                                setError(null);
+                                bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+                            }
+                            else {
+                                setError(m.message);
                             }
                         })
                     }
@@ -144,7 +171,6 @@ export default function (props) {
                                                 key="new-price"
                                                 onChange={(event) => setNewPrice(event.target.value)}
                                                 type="number"
-                                                className="w-100"
                                             />
                                         </Col>
                                         <Col>
@@ -177,7 +203,7 @@ export default function (props) {
                                         </thead>
                                         <tbody style={{ overflowY: 'scroll', maxHeight: '10em', width: '100%' }}>
                                             {bidList !== null && bidList.map((bid, index) => (
-                                                <tr key={`auction_bid_${index}`} ref={(index === (bidList.length - 1)) ? bottomRef : null}>
+                                                <tr key={`auction_bid_${index}`}>
                                                     <td>
                                                         {index + 1}
                                                     </td>
@@ -194,6 +220,41 @@ export default function (props) {
                                             ))}
                                         </tbody>
                                     </Table>
+                                </Col>
+                                <Col style={{ marginTop: '1.5em', borderLeft: '0.1em solid gray' }}>
+                                    <h3>Chat</h3>
+                                    <FlexLayout direction="vertical" style={{ border: '0.1em solid #D3D3D3', borderRadius: 7, height: '40em', padding: '1em' }}>
+                                        <div style={{ flex: 2, height: '100%', overflowY: "scroll" }}>
+                                            {messages !== null && messages.map((m, x) => (
+                                                <div className="my-2">
+                                                    <ChatBubble>
+                                                        <div className="p-1" style={{ textAlign: "left" }}>
+                                                            {m.email}: {m.message}
+                                                        </div>
+                                                    </ChatBubble>
+                                                </div>
+                                            ))}
+                                            <div ref={bottomRef} style={{height: '3em'}} className="w-100"></div>
+                                        </div>
+                                        <div style={{ borderTop: '0.1em solid #D3D3D3' }}>
+                                            <Row className="mt-2">
+                                                <Col className="my-2" lg={9} sm={9}>
+                                                    <Form.Control
+                                                        placeholder="Chat"
+                                                        aria-label="chat"
+                                                        aria-describedby="new-chat"
+                                                        className="w-100"
+                                                        key="new-chat"
+                                                        onChange={(event) => setChatMessage(event.target.value)}
+                                                        type="text"
+                                                    />
+                                                </Col>
+                                                <Col className="my-2">
+                                                    <Button className="w-100" variant="success" onClick={() => socket.emit('chat-message', { item_name: auctionDetails?.item_name, message: chatMessage })}>Bid</Button>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    </FlexLayout>
                                 </Col>
                             </Row>
                         </Card>

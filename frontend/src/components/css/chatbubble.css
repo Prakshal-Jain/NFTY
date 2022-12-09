@@ -1,0 +1,32 @@
+.chatbubble-root {
+    width: 100%;
+    padding: 0.5em 1em 0.5em 1em;
+    border-radius: 0.6em;
+    color: rgba(255, 255, 255, 1);
+    margin-bottom: 2em;
+    word-wrap: break-word;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}
+
+.received {
+    background-color: #28282b;
+    animation: fade-in-move-right 0.5s;
+    animation: fade-in-move-right 0.5s;
+    -moz-animation: fade-in-move-right 0.5s; /* Firefox */
+    -webkit-animation: fade-in-move-right 0.5s; /* Safari and Chrome */
+    -o-animation: fade-in-move-right 0.5s; /* Opera */
+}
+
+a {
+    color: rgba(255, 214, 10, 1);
+}
+
+.user-icon {
+    border-radius: 50%;
+    width: 1.5em;
+    height: 1.5em;
+    border: 0.2em solid #d2ac47;
+}

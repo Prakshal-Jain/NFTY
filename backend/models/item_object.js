@@ -19,7 +19,7 @@ const transactionSchema = new mongoose.Schema({
 const transactionModel = mongoose.model("Transaction", transactionSchema);
 
 const chatSchema = new mongoose.Schema({
-  username: String,
+  email: String,
   message: String,
 })
 
