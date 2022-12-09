@@ -12,3 +12,7 @@ _The open source report links will go here_
 
 ## Security
 _We will document our security features here_
+
+**## Live App:
+[nftyclub.live](http://nftyclub.live/
+)
