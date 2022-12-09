@@ -26,7 +26,29 @@ export default function (props) {
                     if (res.status === 200) {
                         setAuctionDetails(data);
                         setBidList(data.auction_detail);
-                        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+
+                        socket.on(`auction_list#${item_name}`, (auction_list) => {
+                            if (auction_list.status === 200) {
+                                setBidList(auction_list.message);
+                                setError(null);
+                                bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+                            }
+                            else {
+                                setError(auction_list.message);
+                            }
+                        })
+
+                        console.log(`auction_list#${item_name}#${data?.user_email ?? ''}`);
+                        socket.on(`auction_list#${item_name}#${data?.user_email ?? ''}`, (auction_list) => {
+                            if (auction_list.status === 200) {
+                                setBidList(auction_list.message);
+                                setError(null);
+                                bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+                            }
+                            else {
+                                setError(auction_list.message);
+                            }
+                        })
                     }
                     else if (res.status === 401) {
                         navigate('/login');
@@ -39,18 +61,6 @@ export default function (props) {
                     setError("An error occured.");
                 }
             });
-
-        socket.on(`auction_list#${item_name}`, (auction_list) => {
-            console.log(auction_list);
-            if (auction_list.status === 200) {
-                setBidList(auction_list.message);
-                bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-            }
-            else {
-                console.log("Setting the error");
-                setError(auction_list.message);
-            }
-        })
 
         // Get live auction details using websockets
 
