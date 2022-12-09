@@ -185,12 +185,4 @@ router.put('/update-username', async (req, res) => {
     res.send({ message: "Username updated successfully!" });
 })
 
-router.get('/get-all-users', async (req, res) => {
-
-    
-
-    res.status(200);
-    res.send({ message: "Username updated successfully!" });
-})
-
 module.exports = router;
