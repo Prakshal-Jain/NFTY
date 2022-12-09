@@ -103,7 +103,7 @@ function Profile(props) {
 
                     <h5 style={{ textAlign: 'left' }} className="my-2">Username</h5>
                     <Row className="profile-rows">
-                        <Col xs={6} lg={6} style={{ color: 'white' }}>
+                        <Col lg={6} style={{ color: 'white' }} className="my-2">
                             <Form.Control
                                 placeholder="Username"
                                 aria-label="username"
@@ -114,7 +114,7 @@ function Profile(props) {
                                 defaultValue={props.credentials.username}
                             />
                         </Col>
-                        <Col>
+                        <Col className="my-2">
                             <Button onClick={updateUsername} className="w-100" variant="success">Update</Button>
                         </Col>
                     </Row>

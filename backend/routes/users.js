@@ -170,4 +170,27 @@ router.get('/logout', (req, res) => {
     });
 });
 
+router.put('/update-username', async (req, res) => {
+    const user = await utilities.authenticateUser(req.cookies.auth_token)
+    if (user === null) {
+        res.status(401);
+        res.json({ message: "Unauthorized user." });
+        return
+    }
+
+    user.username = req.body.username;
+    const u = await user.save();
+
+    res.status(200);
+    res.send({ message: "Username updated successfully!" });
+})
+
+router.get('/get-all-users', async (req, res) => {
+
+    
+
+    res.status(200);
+    res.send({ message: "Username updated successfully!" });
+})
+
 module.exports = router;
