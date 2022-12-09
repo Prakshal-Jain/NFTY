@@ -1,7 +1,11 @@
 # NFTY
+
+## Live App
+https://nftyclub.live/
+<hr/>
+
 ## Project type: 
 eCommerce (auction house)
-<hr/>
 
 ## Web Frameworks
 - Frontend: ReactJS
