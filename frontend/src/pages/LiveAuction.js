@@ -38,7 +38,6 @@ export default function (props) {
                             }
                         })
 
-                        console.log(`auction_list#${item_name}#${data?.user_email ?? ''}`);
                         socket.on(`auction_list#${item_name}#${data?.user_email ?? ''}`, (auction_list) => {
                             if (auction_list.status === 200) {
                                 setBidList(auction_list.message);
