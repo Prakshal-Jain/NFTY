@@ -19,17 +19,17 @@ io.on('connect', (socket) => {
         const cookies = utilities.parseCookie(socket.handshake.headers.cookie);
         const user = await utilities.authenticateUser(cookies.auth_token);
         if (user === null) {
-            socket.emit(`auction_list#${item_name}`, { status: 403, message: "Unauthorized user." });
+            io.emit(`auction_list#${item_name}#${user.email}`, { status: 403, message: "Unauthorized user." });
             return
         }
 
         if (isNaN(Number(bid_price))) {
-            socket.emit(`auction_list#${item_name}`, { status: 403, message: "Invalid value of Bid Price." });
+            io.emit(`auction_list#${item_name}#${user.email}`, { status: 403, message: "Invalid value of Bid Price." });
             return
         }
 
         if (user.balance < bid_price) {
-            socket.emit(`auction_list#${item_name}`, { status: 403, message: "You do not have the sufficient funds to purchase this item." });
+            io.emit(`auction_list#${item_name}#${user.email}`, { status: 403, message: "You do not have the sufficient funds to purchase this item." });
             return
         }
 
@@ -51,7 +51,7 @@ io.on('connect', (socket) => {
 
         if (item.auction_detail.length > 0 && bid_price <= (item.auction_detail[item.auction_detail.length - 1]).price) {
             // Current bid price must be greater than the last one
-            socket.emit(`auction_list#${item_name}`, { status: 403, message: "Your bid must be greater than the current maximum bid." });
+            io.emit(`auction_list#${item_name}#${user.email}`, { status: 403, message: "Your bid must be greater than the current maximum bid." });
             return
         }
 
@@ -265,8 +265,9 @@ router.get('/auction-data', async (req, res) => {
                     x["__v"] = undefined;
                     x["bidder"] = x["bidder"].email;
                     return x;
-                });;
-                res.json(item);
+                });
+
+                res.json({ ...item._doc, "user_email": user.email });
             }
         }
     })
