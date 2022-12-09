@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 
 router.post('/signup', (req, res) => {
     if (req.body !== null || Object.keys(req.body) > 0) {
-        if (req.body.email !== undefined && req.body.email !== null && utilities.validateEmail(req.body.email) && req.body.password !== undefined && req.body.password !== null && req.body.password.length > 0 && req.body.confirmPassword !== undefined && req.body.confirmPassword !== null && req.body.confirmPassword.length > 0 && req.body.password === req.body.confirmPassword) {
+        if (req.body.username !== undefined && req.body.username !== null && req.body.email !== undefined && req.body.email !== null && utilities.validateEmail(req.body.email) && req.body.password !== undefined && req.body.password !== null && req.body.password.length > 0 && req.body.confirmPassword !== undefined && req.body.confirmPassword !== null && req.body.confirmPassword.length > 0 && req.body.password === req.body.confirmPassword) {
             userModel.find({ email: req.body.email }, async (err, user_list) => {
                 if (err) {
                     console.log(err);
@@ -31,6 +31,7 @@ router.post('/signup', (req, res) => {
 
                         const newUser = new userModel({
                             email: req.body.email,
+                            username: req.body.username,
                             password: hashedPassword,
                             purchased_items: [],
                             sold_items: [],
@@ -126,6 +127,7 @@ router.get('/profile', (req, res) => {
                 const user = token_list[0];
                 const dict = {
                     email: user.email,
+                    username: user.username,
                     purchased_items: utilities.filterItemList(user.purchased_items),
                     sold_items: utilities.filterItemList(user.sold_items),
                     balance: user.balance,

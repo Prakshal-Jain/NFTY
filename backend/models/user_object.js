@@ -3,6 +3,7 @@ const {objectSchema} = require('./item_object');
 
 // ** anything that is a list = list of items 
 const userSchema = new mongoose.Schema({
+    username: String,
     email: String,
     password: String, 
     purchased_items: [objectSchema], 

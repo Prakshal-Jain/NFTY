@@ -5,6 +5,7 @@ import "./css/signup.css"
 
 export default function Signup(props) {
     const [email, setEmail] = useState(null);
+    const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
     const [confirmPassword, setConfirmPassword] = useState(null);
     const [redirect, setRedirect] = useState(null);
@@ -13,6 +14,7 @@ export default function Signup(props) {
     const handleSignup = () => {
         const credentials = {
             email,
+            username,
             password,
             confirmPassword
         }
@@ -59,6 +61,14 @@ export default function Signup(props) {
                     className="w-100 mb-4"
                     onChange={(event) => setEmail(event.target.value)}
                     key="email"
+                />
+                <Form.Control
+                    placeholder="Username"
+                    aria-label="username"
+                    aria-describedby="basic-username"
+                    className="w-100 mb-4"
+                    onChange={(event) => setUsername(event.target.value)}
+                    key="username"
                 />
                 <Form.Control
                     placeholder="Password"

@@ -23,8 +23,33 @@ function Profile(props) {
     const [modalError, setModalError] = useState(null);
     const [newPrice, setNewPrice] = useState(null);
     const [successResell, setSuccessResell] = useState(false);
+    const [username, setUsername] = useState(null);
+    const [error, setError] = useState(null);
 
     const navigate = useNavigate();
+
+    const updateUsername = async () => {
+        const d = await fetch('/api/users/update-username', {
+            method: 'PUT',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username }),
+        })
+            .then(async (res) => {
+                const data = await res.json();
+                if (res.status === 200) {
+                    return
+                }
+                else if (res.status === 401) {
+                    navigate('/login');
+                }
+                else {
+                    setError(data.message);
+                }
+            });
+    }
 
     const handleResell = async () => {
         const d = await fetch('/api/items/resell-marketplace-item', {
@@ -75,9 +100,29 @@ function Profile(props) {
                             <Image src={userProfilePhoto} width={100} roundedCircle={true} />
                         </Col>
                     </Row>
+
+                    <h5 style={{ textAlign: 'left' }} className="my-2">Username</h5>
+                    <Row className="profile-rows">
+                        <Col xs={6} lg={6} style={{ color: 'white' }}>
+                            <Form.Control
+                                placeholder="Username"
+                                aria-label="username"
+                                aria-describedby="basic-username"
+                                onChange={(event) => setUsername(event.target.value)}
+                                key="username"
+                                className="w-100"
+                                defaultValue={props.credentials.username}
+                            />
+                        </Col>
+                        <Col>
+                            <Button onClick={updateUsername} className="w-100" variant="success">Update</Button>
+                        </Col>
+                    </Row>
+
                     <Row className="profile-rows">
                         <Col style={{ fontWeight: 'bold' }}>
-                            @{props.credentials.email.split("@")[0]}
+                            <h5 style={{ textAlign: 'left' }} className="my-2">Email</h5>
+                            {props.credentials.email}
                         </Col>
                     </Row>
                     <hr />
