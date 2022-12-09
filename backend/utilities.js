@@ -67,8 +67,8 @@ function filterItemList(items) {
                 return x;
             });
         }
-
-        if (Array.isArray(item["auction_detail"])) {
+        
+        if(Array.isArray(item["auction_detail"])){
             item["auction_detail"] = item["auction_detail"].map((x, index) => {
                 x["_id"] = undefined;
                 x["__v"] = undefined;

@@ -18,6 +18,13 @@ const transactionSchema = new mongoose.Schema({
 
 const transactionModel = mongoose.model("Transaction", transactionSchema);
 
+const chatSchema = new mongoose.Schema({
+  username: String,
+  message: String,
+})
+
+const chatModel = mongoose.model("Chat", chatSchema);
+
 // schema for item infos, each item saved on our website will go onto this schema 
 const objectSchema = new mongoose.Schema({
   item_name: String,
@@ -32,8 +39,9 @@ const objectSchema = new mongoose.Schema({
     type: String,
     enum: ['marketplace', 'auction', 'none'],
     required: true
-  }
+  },
+  chat: [chatSchema],
 });
 
 const objectModel = mongoose.model("Object", objectSchema);
-module.exports = { objectModel, objectSchema, transactionModel, auctionModel };
+module.exports = { objectModel, objectSchema, transactionModel, auctionModel, chatModel };

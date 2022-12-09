@@ -70,7 +70,6 @@ io.on('connect', (socket) => {
             // Check who have the highest bid. Set them as the owner of the item. Add to purchased item of user and sold items of owner.
             const new_owner = await userModel.findOne({ email: (old_auction_details[old_auction_details.length - 1]).bidder.email });
             const old_owner = await userModel.findOne({ email: item.owner.email });
-            
             if (new_owner.email === old_owner.email) {
                 io.emit(`auction_list#${item_name}`, { status: 403, message: `This auction has been ended.` });
                 // Owner didn't changed
@@ -260,12 +259,6 @@ router.get('/auction-data', async (req, res) => {
                     return
                 }
                 res.status(200);
-                item["auction_detail"] = item["auction_detail"].map((x, index) => {
-                    x["_id"] = undefined;
-                    x["__v"] = undefined;
-                    x["bidder"] = x["bidder"].email;
-                    return x;
-                });
 
                 res.json({ ...item._doc, "user_email": user.email });
             }
