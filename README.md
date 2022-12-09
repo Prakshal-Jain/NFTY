@@ -4,7 +4,7 @@ eCommerce (auction house)
 <hr/>
 
 ## Web Frameworks
-- Frontend: web3 (https://www.npmjs.com/package/web3) and ReactJS
+- Frontend: ReactJS
 - Backend: ExpressJS (https://expressjs.com/)
 
 ## Open-Source Reports
@@ -14,5 +14,5 @@ _The open source report links will go here_
 _We will document our security features here_
 
 **## Live App:
-[nftyclub.live](http://nftyclub.live/
+[nftyclub.live](https://nftyclub.live/
 )
