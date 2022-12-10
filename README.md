@@ -28,3 +28,10 @@ All the requests sent to the server are validated as follows
   - Created a utility function to filter out unwanted fields (principle: only send what the client asks for, and validate).
   - Changes the owner/bidder/seller etc. which uses user model to the plain string with their email when sending response to avoid sending UserID or hashed and salted passwords to frontend.
   - Used bcrypt to salt and hash passwords, and used high-order authentication tokens for maximum security.
+
+
+## Contributors
+- stirfrysushi (An Nguyen)
+- Prakshal-Jain and Prakshal Pro (Prakshal Jain)
+- SolarFlaries (James)
+- ericidy (Eric)
